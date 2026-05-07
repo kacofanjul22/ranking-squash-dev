@@ -1,0 +1,919 @@
+<!DOCTYPE html>
+<html lang="es">
+<head>
+<meta charset="UTF-8">
+<meta name="viewport" content="width=device-width, initial-scale=1.0">
+<title>Ranking Squash Tucumán 2026</title>
+<link href="https://fonts.googleapis.com/css2?family=Bebas+Neue&family=DM+Sans:wght@400;500;600&display=swap" rel="stylesheet">
+<style>
+  :root {
+    --black: #0e0e0e;
+    --white: #f5f2ed;
+    --accent: #c8ff00;
+    --accent-dark: #9fc400;
+    --gray: #1e1e1e;
+    --gray2: #2c2c2c;
+    --gray3: #444;
+    --muted: #888;
+    --sector-a: #c8ff00;
+    --sector-b: #00d4ff;
+    --sector-c: #ff6b35;
+    --sector-d: #c471ed;
+  }
+  * { box-sizing: border-box; margin: 0; padding: 0; }
+  body {
+    background: var(--black);
+    color: var(--white);
+    font-family: 'DM Sans', sans-serif;
+    min-height: 100vh;
+  }
+
+  /* HEADER */
+  header {
+    background: var(--gray);
+    border-bottom: 2px solid var(--accent);
+    padding: 0 2rem;
+    display: flex;
+    align-items: center;
+    justify-content: space-between;
+    gap: 1rem;
+    position: sticky;
+    top: 0;
+    z-index: 100;
+  }
+  .logo-area {
+    display: flex;
+    align-items: center;
+    gap: 1rem;
+    padding: 1rem 0;
+  }
+  .logo-icon {
+    width: 42px;
+    height: 42px;
+    background: var(--accent);
+    border-radius: 50%;
+    display: flex;
+    align-items: center;
+    justify-content: center;
+    flex-shrink: 0;
+  }
+  .logo-icon svg { width: 22px; height: 22px; }
+  .logo-text h1 {
+    font-family: 'Bebas Neue', sans-serif;
+    font-size: 1.6rem;
+    letter-spacing: 2px;
+    color: var(--accent);
+    line-height: 1;
+  }
+  .logo-text p {
+    font-size: 0.7rem;
+    color: var(--muted);
+    letter-spacing: 3px;
+    text-transform: uppercase;
+  }
+  .sync-status {
+    font-size: 0.72rem;
+    color: var(--muted);
+    display: flex;
+    align-items: center;
+    gap: 6px;
+  }
+  .dot {
+    width: 7px;
+    height: 7px;
+    border-radius: 50%;
+    background: var(--muted);
+  }
+  .dot.live { background: var(--accent); animation: pulse 2s infinite; }
+  @keyframes pulse {
+    0%, 100% { opacity: 1; }
+    50% { opacity: 0.3; }
+  }
+
+  /* NAV TABS */
+  nav {
+    background: var(--gray);
+    border-bottom: 1px solid var(--gray3);
+    display: flex;
+    gap: 0;
+    padding: 0 2rem;
+    overflow-x: auto;
+    scrollbar-width: none;
+  }
+  nav::-webkit-scrollbar { display: none; }
+  .tab {
+    padding: 0.85rem 1.4rem;
+    font-size: 0.85rem;
+    font-weight: 500;
+    letter-spacing: 1px;
+    text-transform: uppercase;
+    cursor: pointer;
+    color: var(--muted);
+    border-bottom: 2px solid transparent;
+    transition: all 0.2s;
+    white-space: nowrap;
+    background: none;
+    border-top: none;
+    border-left: none;
+    border-right: none;
+  }
+  .tab:hover { color: var(--white); }
+  .tab.active {
+    color: var(--accent);
+    border-bottom-color: var(--accent);
+  }
+
+  /* MAIN */
+  main { max-width: 960px; margin: 0 auto; padding: 2rem 1.5rem; }
+
+  /* PANELS */
+  .panel { display: none; }
+  .panel.active { display: block; }
+
+  /* SECTOR TABS */
+  .sector-tabs {
+    display: flex;
+    gap: 8px;
+    margin-bottom: 1.5rem;
+    flex-wrap: wrap;
+  }
+  .sector-btn {
+    padding: 6px 18px;
+    border-radius: 20px;
+    font-size: 0.8rem;
+    font-weight: 600;
+    letter-spacing: 1px;
+    cursor: pointer;
+    border: 1.5px solid transparent;
+    background: var(--gray2);
+    color: var(--muted);
+    transition: all 0.2s;
+    font-family: 'DM Sans', sans-serif;
+  }
+  .sector-btn:hover { color: var(--white); }
+  .sector-btn.active-a { background: #1a2200; color: var(--sector-a); border-color: var(--sector-a); }
+  .sector-btn.active-b { background: #001e26; color: var(--sector-b); border-color: var(--sector-b); }
+  .sector-btn.active-c { background: #260d00; color: var(--sector-c); border-color: var(--sector-c); }
+  .sector-btn.active-d { background: #1a0026; color: var(--sector-d); border-color: var(--sector-d); }
+
+  /* RANKING CONTROLS ROW */
+  .ranking-controls {
+    display: flex;
+    align-items: center;
+    gap: 1rem;
+    margin-bottom: 1.2rem;
+    flex-wrap: wrap;
+  }
+  .fecha-select-wrap {
+    margin-bottom: 1.5rem;
+    display: flex;
+    align-items: center;
+    gap: 1rem;
+    flex-wrap: wrap;
+  }
+  .fecha-select-wrap label {
+    font-size: 0.8rem;
+    letter-spacing: 2px;
+    text-transform: uppercase;
+    color: var(--muted);
+    font-weight: 600;
+  }
+  .fecha-select-wrap select,
+  .ranking-fecha-select {
+    background: var(--gray2);
+    color: var(--white);
+    border: 1px solid var(--gray3);
+    border-radius: 8px;
+    padding: 8px 14px;
+    font-size: 0.88rem;
+    font-family: 'DM Sans', sans-serif;
+    cursor: pointer;
+    outline: none;
+    transition: border-color 0.2s;
+  }
+  .fecha-select-wrap select:hover,
+  .ranking-fecha-select:hover { border-color: var(--accent); }
+
+  /* RANKING TABLE */
+  .ranking-table-wrap { overflow-x: auto; }
+  .ranking-table {
+    width: 100%;
+    border-collapse: collapse;
+  }
+  .ranking-table thead tr {
+    border-bottom: 1px solid var(--gray3);
+  }
+  .ranking-table th {
+    text-align: left;
+    font-size: 0.7rem;
+    font-weight: 600;
+    letter-spacing: 2px;
+    text-transform: uppercase;
+    color: var(--muted);
+    padding: 0 1rem 0.75rem;
+  }
+  .ranking-table th:first-child { padding-left: 0; }
+  .ranking-table tbody tr {
+    border-bottom: 1px solid #1a1a1a;
+    transition: background 0.15s;
+  }
+  .ranking-table tbody tr:hover { background: var(--gray2); }
+  .ranking-table td {
+    padding: 0.85rem 1rem;
+    font-size: 0.92rem;
+  }
+  .ranking-table td:first-child { padding-left: 0; }
+  .pos-cell {
+    font-family: 'Bebas Neue', sans-serif;
+    font-size: 1.4rem;
+    color: var(--gray3);
+    width: 48px;
+    text-align: right;
+    padding-right: 1rem !important;
+  }
+  .pos-top { color: var(--accent); }
+  .player-name { font-weight: 500; }
+  .sector-badge {
+    display: inline-block;
+    padding: 2px 10px;
+    border-radius: 10px;
+    font-size: 0.7rem;
+    font-weight: 600;
+    letter-spacing: 1px;
+  }
+  .badge-a { background: #1a2200; color: var(--sector-a); }
+  .badge-b { background: #001e26; color: var(--sector-b); }
+  .badge-c { background: #260d00; color: var(--sector-c); }
+  .badge-d { background: #1a0026; color: var(--sector-d); }
+
+  /* VARIACIÓN */
+  .var-cell {
+    font-size: 0.8rem;
+    font-weight: 600;
+    white-space: nowrap;
+    min-width: 52px;
+  }
+  .var-up   { color: #4dff91; }
+  .var-down { color: #ff5c5c; }
+  .var-same { color: var(--muted); }
+  .var-new  { color: var(--sector-b); font-size: 0.7rem; letter-spacing: 1px; }
+
+  /* PARTIDOS G/P */
+  .record-cell {
+    font-size: 0.82rem;
+    white-space: nowrap;
+  }
+  .rec-w { color: #4dff91; font-weight: 600; }
+  .rec-l { color: #ff5c5c; font-weight: 600; }
+  .rec-sep { color: var(--muted); margin: 0 2px; }
+
+  /* RESULTS */
+  .match-grid {
+    display: grid;
+    gap: 10px;
+  }
+  .match-card {
+    background: var(--gray);
+    border-radius: 10px;
+    padding: 0.9rem 1.2rem;
+    display: flex;
+    align-items: center;
+    gap: 1rem;
+    border: 1px solid var(--gray2);
+  }
+  .match-players {
+    flex: 1;
+    display: flex;
+    align-items: center;
+    gap: 0.5rem;
+    flex-wrap: wrap;
+  }
+  .player-pill {
+    font-size: 0.9rem;
+    font-weight: 500;
+  }
+  .vs-sep {
+    font-size: 0.7rem;
+    color: var(--muted);
+    font-weight: 600;
+    letter-spacing: 1px;
+  }
+  .match-score {
+    font-family: 'Bebas Neue', sans-serif;
+    font-size: 1.5rem;
+    color: var(--accent);
+    letter-spacing: 2px;
+    white-space: nowrap;
+    min-width: 52px;
+    text-align: right;
+  }
+  .match-score.pending {
+    font-size: 0.75rem;
+    font-family: 'DM Sans', sans-serif;
+    color: var(--muted);
+    font-weight: 500;
+    letter-spacing: 1px;
+    text-transform: uppercase;
+    display: flex;
+    align-items: center;
+  }
+  .winner-mark { color: var(--accent); font-size: 0.75rem; margin-left: 4px; }
+  .loser { color: var(--muted); }
+
+  /* REGLAMENTO */
+  .rules-card {
+    background: var(--gray);
+    border-radius: 12px;
+    padding: 2rem;
+    border: 1px solid var(--gray3);
+    line-height: 1.8;
+  }
+  .rules-card h2 {
+    font-family: 'Bebas Neue', sans-serif;
+    font-size: 1.6rem;
+    color: var(--accent);
+    letter-spacing: 2px;
+    margin-bottom: 1.5rem;
+  }
+  .rules-card ol { padding-left: 1.2rem; }
+  .rules-card li {
+    font-size: 0.92rem;
+    color: #ccc;
+    margin-bottom: 1rem;
+    padding-left: 0.5rem;
+  }
+  .rules-card li strong { color: var(--white); }
+
+  /* LOADING / ERROR */
+  .loading-msg, .error-msg {
+    text-align: center;
+    padding: 3rem;
+    color: var(--muted);
+    font-size: 0.9rem;
+    letter-spacing: 1px;
+  }
+  .error-msg { color: #ff6b6b; }
+
+  /* RANKING FECHA SELECTOR */
+  .ranking-date-bar {
+    display: flex;
+    align-items: center;
+    justify-content: space-between;
+    gap: 1rem;
+    margin-bottom: 1.2rem;
+    flex-wrap: wrap;
+  }
+  .ranking-date-label {
+    font-size: 0.75rem;
+    letter-spacing: 2px;
+    text-transform: uppercase;
+    color: var(--muted);
+    font-weight: 600;
+  }
+  .date-nav {
+    display: flex;
+    align-items: center;
+    gap: 8px;
+  }
+  .date-nav-btn {
+    background: var(--gray2);
+    color: var(--white);
+    border: 1px solid var(--gray3);
+    border-radius: 6px;
+    width: 30px;
+    height: 30px;
+    display: flex;
+    align-items: center;
+    justify-content: center;
+    cursor: pointer;
+    font-size: 0.9rem;
+    transition: border-color 0.2s;
+    font-family: 'DM Sans', sans-serif;
+  }
+  .date-nav-btn:hover { border-color: var(--accent); color: var(--accent); }
+  .date-nav-btn:disabled { opacity: 0.3; cursor: default; }
+
+  /* STATS LEGEND */
+  .stats-legend {
+    display: flex;
+    gap: 1rem;
+    margin-bottom: 1rem;
+    flex-wrap: wrap;
+  }
+  .legend-item {
+    font-size: 0.72rem;
+    color: var(--muted);
+    display: flex;
+    align-items: center;
+    gap: 4px;
+  }
+  .legend-dot {
+    width: 8px; height: 8px; border-radius: 50%;
+  }
+
+  @media (max-width: 600px) {
+    header { padding: 0 1rem; }
+    nav { padding: 0 1rem; }
+    main { padding: 1.5rem 1rem; }
+    .match-card { flex-direction: column; align-items: flex-start; gap: 0.5rem; }
+    .match-score { text-align: left; }
+    .ranking-table th.hide-mobile,
+    .ranking-table td.hide-mobile { display: none; }
+  }
+</style>
+</head>
+<body>
+
+<header>
+  <div class="logo-area">
+    <div class="logo-icon">
+      <svg viewBox="0 0 24 24" fill="none" xmlns="http://www.w3.org/2000/svg">
+        <circle cx="12" cy="12" r="10" stroke="#0e0e0e" stroke-width="2"/>
+        <path d="M5 12 Q12 4 19 12 Q12 20 5 12Z" fill="#0e0e0e"/>
+      </svg>
+    </div>
+    <div class="logo-text">
+      <h1>Ranking 2026</h1>
+      <p>Squash · Tucumán</p>
+    </div>
+  </div>
+  <div class="sync-status">
+    <span class="dot live" id="sync-dot"></span>
+    <span id="sync-text">Cargando...</span>
+  </div>
+</header>
+
+<nav>
+  <button class="tab active" onclick="showTab('ranking', this)">Ranking</button>
+  <button class="tab" onclick="showTab('resultados', this)">Resultados</button>
+  <button class="tab" onclick="showTab('reglamento', this)">Reglamento</button>
+</nav>
+
+<main>
+  <!-- RANKING PANEL -->
+  <div class="panel active" id="panel-ranking">
+    <div class="sector-tabs" id="sector-tabs">
+      <button class="sector-btn active-a" onclick="showCategoria('todos', this)">Todos</button>
+      <button class="sector-btn" onclick="showCategoria('A', this)">Categoría A</button>
+      <button class="sector-btn" onclick="showCategoria('B', this)">Categoría B</button>
+      <button class="sector-btn" onclick="showCategoria('C', this)">Categoría C</button>
+      <button class="sector-btn" onclick="showCategoria('D', this)">Categoría D</button>
+    </div>
+
+    <!-- Selector de fecha del ranking -->
+    <div class="ranking-date-bar">
+      <div style="display:flex;align-items:center;gap:10px;flex-wrap:wrap;">
+        <span class="ranking-date-label">Fecha ranking</span>
+        <div class="date-nav">
+          <button class="date-nav-btn" id="btn-prev-fecha" onclick="navRankingFecha(-1)" title="Fecha anterior">‹</button>
+          <select class="ranking-fecha-select" id="ranking-fecha-select" onchange="onRankingFechaChange()">
+            <option value="">Cargando...</option>
+          </select>
+          <button class="date-nav-btn" id="btn-next-fecha" onclick="navRankingFecha(1)" title="Fecha siguiente">›</button>
+        </div>
+      </div>
+      <div class="stats-legend">
+        <span class="legend-item"><span class="legend-dot" style="background:#4dff91"></span> Subió</span>
+        <span class="legend-item"><span class="legend-dot" style="background:#ff5c5c"></span> Bajó</span>
+        <span class="legend-item"><span style="font-size:0.72rem;color:var(--sector-b)">NEW</span> Nuevo</span>
+        <span class="legend-item"><span class="rec-w" style="font-size:0.72rem">G</span><span class="rec-sep">/</span><span class="rec-l" style="font-size:0.72rem">P</span> Partidos acumulados</span>
+      </div>
+    </div>
+
+    <div class="ranking-table-wrap">
+      <div id="ranking-content" class="loading-msg">Cargando ranking...</div>
+    </div>
+  </div>
+
+  <!-- RESULTADOS PANEL -->
+  <div class="panel" id="panel-resultados">
+    <div class="fecha-select-wrap">
+      <label>Fecha</label>
+      <select id="fecha-select" onchange="renderResultados()">
+        <option value="">Cargando...</option>
+      </select>
+    </div>
+    <div class="match-grid" id="resultados-content">
+      <div class="loading-msg">Cargando resultados...</div>
+    </div>
+  </div>
+
+  <!-- REGLAMENTO PANEL -->
+  <div class="panel" id="panel-reglamento">
+    <div class="rules-card">
+      <h2>Reglamento</h2>
+      <ol>
+        <li>El Ranking se publicará en los canales de difusión de la asociación.</li>
+        <li>Los jugadores de ranking <strong>"par"</strong> deberán desafiar al de ranking <strong>"impar"</strong> ubicado 3 puestos más arriba. El impar debe aceptarlo.</li>
+        <li>Si el <strong>#par pierde</strong> baja 1 posición. Si el <strong>#par gana</strong> sube 4 puestos. Si el <strong>#impar pierde</strong> baja 4 posiciones y si gana sube 1.<br><em>Ej: si #10 desafía a #7; si #10 pierde → pasa a #11 (y #7 a #6). Si #10 gana → pasa a #6 (y #7 a #11).</em></li>
+        <li><strong>Excepciones:</strong> a) El #4 desafía al #2; el ganador desafía al #1. b) Si el último jugador es impar, desafía al ubicado 2 puestos arriba. c) Si el último es par, el penúltimo gana sin jugar.</li>
+        <li>Los desafíos se coordinan y juegan en <strong>dos períodos mensuales</strong>: del día 2 al 14, y del 16 al 30/31. Entre ambos habrá 2 días de actualización del ranking.</li>
+        <li>El desafío implica la <strong>coordinación</strong> (primeros 5 días); el partido se juega dentro del período del punto 4.</li>
+        <li>La comunicación del resultado la realiza el <strong>par</strong> hasta el día 14 o 30/31 de cada período.</li>
+        <li>Los partidos se disputarán al <strong>mejor de 5 games</strong>.</li>
+        <li>El ranking va de <strong>abril al 15 de noviembre</strong>. Al finalizar se realiza el Torneo Master de fin de año.</li>
+        <li>Se cobra <strong>$20.000</strong> el primer mes (abril) y <strong>$12.000</strong> los meses posteriores.</li>
+        <li>Se aplica <strong>W.O.</strong> pasados 15 minutos de la hora fijada.</li>
+        <li>El ranking está separado en <strong>4 categorías: A, B, C y D</strong>. Los mejores clasificados de cada categoría participarán en el Torneo Master de fin de año.</li>
+        <li>La organización se reserva el derecho de ubicar a nuevos jugadores en la categoría o posición que considere pertinente.</li>
+      </ol>
+    </div>
+  </div>
+</main>
+
+<script>
+// ─── CONFIG ─────────────────────────────────────────────────────────────────
+const CSV_RESULTADOS = 'https://docs.google.com/spreadsheets/d/e/2PACX-1vTJt7igbquOBdwX_4fRLxjuScNmkbskfHm7DrzoDYr-0ew12qnfAw8wiI1OlHTCe6GFszKF9eqnUiXD/pub?gid=0&single=true&output=csv';
+const CSV_RANKING    = 'https://docs.google.com/spreadsheets/d/e/2PACX-1vTJt7igbquOBdwX_4fRLxjuScNmkbskfHm7DrzoDYr-0ew12qnfAw8wiI1OlHTCe6GFszKF9eqnUiXD/pub?gid=1935327508&single=true&output=csv';
+
+// ─── STATE ───────────────────────────────────────────────────────────────────
+// rankingByFecha: { "Fecha1": [{pos, nombre, categoria}, ...], "Fecha2": [...] }
+let rankingByFecha   = {};
+let rankingFechas    = []; // sorted list of fecha keys
+let currentRankingFecha = null;
+
+let resultadosData   = [];
+let currentCategoria = 'todos';
+
+// playerStats: { "Nombre": { wins: N, losses: N } } — acumulado total
+let playerStats = {};
+
+// ─── CSV PARSER ──────────────────────────────────────────────────────────────
+function parseCSV(text) {
+  const lines = text.trim().split('\n');
+  return lines.map(line => {
+    const cols = [];
+    let cur = '', inQ = false;
+    for (let i = 0; i < line.length; i++) {
+      const c = line[i];
+      if (c === '"') { inQ = !inQ; }
+      else if (c === ',' && !inQ) { cols.push(cur.trim()); cur = ''; }
+      else { cur += c; }
+    }
+    cols.push(cur.trim());
+    return cols;
+  });
+}
+
+async function fetchCSV(url) {
+  const res = await fetch(url);
+  if (!res.ok) throw new Error('HTTP ' + res.status);
+  return parseCSV(await res.text());
+}
+
+// ─── LOAD RANKING ─────────────────────────────────────────────────────────────
+// Estructura esperada de la pestaña RANKINGS:
+//   FECHA | POSICIÓN | JUGADOR | CATEGORÍA
+// Si sólo hay una fecha (estructura antigua: POSICIÓN | JUGADOR | CATEGORÍA),
+// el código lo detecta automáticamente y usa "Actual" como nombre de fecha.
+async function loadRanking() {
+  try {
+    const rows = await fetchCSV(CSV_RANKING);
+    if (rows.length === 0) return;
+
+    const h = rows[0].map(x => x.toString().toUpperCase().trim());
+    console.log('Headers RANKING:', h);
+
+    // Detectar si la primera columna es FECHA o POSICIÓN
+    const firstCol = h[0];
+    const hasMultiFecha = firstCol.includes('FECH') || firstCol.includes('DATE') || firstCol.includes('PERIOD');
+
+    rankingByFecha = {};
+
+    if (hasMultiFecha) {
+      // Nueva estructura: FECHA | POS | NOMBRE | CATEGORÍA
+      const fIdx = 0;
+      const pIdx = h.findIndex((x, i) => i > 0 && (x.includes('POS') || x === '#'));
+      const nIdx = h.findIndex((x, i) => i > 0 && (x.includes('NOM') || x.includes('JUGAD')));
+      const cIdx = h.findIndex((x, i) => i > 0 && (x.includes('CAT') || x.includes('GRUP')));
+      const pi = pIdx >= 0 ? pIdx : 1;
+      const ni = nIdx >= 0 ? nIdx : 2;
+      const ci = cIdx >= 0 ? cIdx : 3;
+
+      rows.forEach((row, i) => {
+        if (i === 0) return;
+        const fecha = (row[fIdx] || '').toString().trim();
+        const nombre = (row[ni] || '').toString().trim();
+        if (!fecha || !nombre) return;
+        if (!rankingByFecha[fecha]) rankingByFecha[fecha] = [];
+        const cat = (row[ci] || '').toString().trim().toUpperCase();
+        rankingByFecha[fecha].push({
+          pos:       (row[pi] || '').toString().trim(),
+          nombre,
+          categoria: ['A','B','C','D'].includes(cat) ? cat : '',
+        });
+      });
+    } else {
+      // Estructura antigua: una sola fecha
+      const pi = h.findIndex(x => x.includes('POS') || x === '#');
+      const ni = h.findIndex(x => x.includes('NOM') || x.includes('JUGAD'));
+      const ci = h.findIndex(x => x.includes('CAT') || x.includes('GRUP') || x.includes('BOMB'));
+      const colPos = pi >= 0 ? pi : 0;
+      const colNombre = ni >= 0 ? ni : 1;
+      const colCat = ci >= 0 ? ci : 2;
+
+      const players = [];
+      rows.forEach((row, i) => {
+        if (i === 0) return;
+        if (!row[colPos] && !row[colNombre]) return;
+        const cat = (row[colCat] || '').toString().trim().toUpperCase();
+        const nombre = (row[colNombre] || '').toString().trim();
+        if (!nombre) return;
+        players.push({
+          pos:       (row[colPos] || '').toString().trim(),
+          nombre,
+          categoria: ['A','B','C','D'].includes(cat) ? cat : '',
+        });
+      });
+      rankingByFecha['Actual'] = players;
+    }
+
+    // Ordenar fechas (numéricamente si son números, sino lexicográfico)
+    rankingFechas = Object.keys(rankingByFecha).sort((a, b) => {
+      // Intentar parsear como fecha dd/mm/yyyy
+      const pa = parseFecha(a), pb = parseFecha(b);
+      if (pa && pb) return pa - pb;
+      const na = parseFloat(a), nb = parseFloat(b);
+      if (!isNaN(na) && !isNaN(nb)) return na - nb;
+      return a.localeCompare(b);
+    });
+
+    // Seleccionar la última fecha por defecto
+    currentRankingFecha = rankingFechas[rankingFechas.length - 1];
+
+    populateRankingFechaSelect();
+    renderRanking();
+  } catch(e) {
+    console.error(e);
+    document.getElementById('ranking-content').innerHTML =
+      `<div class="error-msg">No se pudo cargar el ranking.<br><small>${e.message}</small></div>`;
+    setSyncError();
+  }
+}
+
+function parseFecha(str) {
+  // dd/mm/yyyy or dd-mm-yyyy
+  const m = str.match(/^(\d{1,2})[\/\-](\d{1,2})[\/\-](\d{2,4})$/);
+  if (m) {
+    const y = m[3].length === 2 ? '20' + m[3] : m[3];
+    return new Date(`${y}-${m[2].padStart(2,'0')}-${m[1].padStart(2,'0')}`);
+  }
+  return null;
+}
+
+function populateRankingFechaSelect() {
+  const sel = document.getElementById('ranking-fecha-select');
+  sel.innerHTML = rankingFechas.map(f =>
+    `<option value="${f}"${f === currentRankingFecha ? ' selected' : ''}>${f}</option>`
+  ).join('');
+  updateNavBtns();
+}
+
+function onRankingFechaChange() {
+  currentRankingFecha = document.getElementById('ranking-fecha-select').value;
+  updateNavBtns();
+  renderRanking();
+}
+
+function navRankingFecha(dir) {
+  const idx = rankingFechas.indexOf(currentRankingFecha);
+  const newIdx = idx + dir;
+  if (newIdx < 0 || newIdx >= rankingFechas.length) return;
+  currentRankingFecha = rankingFechas[newIdx];
+  document.getElementById('ranking-fecha-select').value = currentRankingFecha;
+  updateNavBtns();
+  renderRanking();
+}
+
+function updateNavBtns() {
+  const idx = rankingFechas.indexOf(currentRankingFecha);
+  document.getElementById('btn-prev-fecha').disabled = idx <= 0;
+  document.getElementById('btn-next-fecha').disabled = idx >= rankingFechas.length - 1;
+}
+
+// ─── LOAD RESULTADOS ──────────────────────────────────────────────────────────
+async function loadResultados() {
+  try {
+    const rows = await fetchCSV(CSV_RESULTADOS);
+    resultadosData = [];
+    playerStats = {};
+
+    rows.forEach((row, i) => {
+      if (i === 0) return;
+      const fecha = (row[0] || '').toString().trim();
+      if (!fecha) return;
+      const desafiante = (row[1] || '').toString().trim();
+      const aceptante  = (row[2] || '').toString().trim();
+      const gd = row[3] !== undefined && row[3] !== '' ? row[3].toString().trim() : null;
+      const ga = row[4] !== undefined && row[4] !== '' ? row[4].toString().trim() : null;
+
+      resultadosData.push({ fecha, desafiante, aceptante, games_d: gd, games_a: ga });
+
+      // Calcular estadísticas acumuladas
+      const gdn = gd !== null ? parseInt(gd) : NaN;
+      const gan = ga !== null ? parseInt(ga) : NaN;
+      if (!isNaN(gdn) && !isNaN(gan) && (gdn > 0 || gan > 0)) {
+        if (desafiante) {
+          if (!playerStats[desafiante]) playerStats[desafiante] = { wins: 0, losses: 0 };
+          if (gdn > gan) playerStats[desafiante].wins++;
+          else playerStats[desafiante].losses++;
+        }
+        if (aceptante) {
+          if (!playerStats[aceptante]) playerStats[aceptante] = { wins: 0, losses: 0 };
+          if (gan > gdn) playerStats[aceptante].wins++;
+          else playerStats[aceptante].losses++;
+        }
+      }
+    });
+
+    populateFechaSelect();
+    renderResultados();
+  } catch(e) {
+    document.getElementById('resultados-content').innerHTML =
+      `<div class="error-msg">No se pudieron cargar los resultados.<br><small>${e.message}</small></div>`;
+    setSyncError();
+  }
+}
+
+function populateFechaSelect() {
+  const sel = document.getElementById('fecha-select');
+  const fechas = [...new Set(resultadosData.map(r => r.fecha))].sort((a, b) => {
+    const na = parseFloat(a), nb = parseFloat(b);
+    if (!isNaN(na) && !isNaN(nb)) return na - nb;
+    return a.localeCompare(b);
+  });
+  sel.innerHTML = fechas.map(f => `<option value="${f}">Fecha ${f}</option>`).join('');
+  if (fechas.length > 0) sel.value = fechas[fechas.length - 1];
+}
+
+// ─── RENDER RESULTADOS ────────────────────────────────────────────────────────
+function renderResultados() {
+  const sel = document.getElementById('fecha-select');
+  const fecha = sel.value;
+  const matches = resultadosData.filter(r => r.fecha === fecha);
+  const container = document.getElementById('resultados-content');
+  if (matches.length === 0) {
+    container.innerHTML = '<div class="loading-msg">Sin resultados para esta fecha.</div>';
+    return;
+  }
+  container.innerHTML = matches.map(m => {
+    const gd = m.games_d !== null ? parseInt(m.games_d) : null;
+    const ga = m.games_a !== null ? parseInt(m.games_a) : null;
+    const hasScore = gd !== null && ga !== null && (gd > 0 || ga > 0);
+    const dWins = hasScore && gd > ga;
+    const aWins = hasScore && ga > gd;
+    const scoreHTML = hasScore
+      ? `<div class="match-score">${gd}&ndash;${ga}</div>`
+      : `<div class="match-score pending">Pendiente</div>`;
+    return `
+      <div class="match-card">
+        <div class="match-players">
+          <span class="player-pill ${aWins ? 'loser' : ''}">${m.desafiante || '—'}${dWins ? '<span class="winner-mark">✓</span>' : ''}</span>
+          <span class="vs-sep">VS</span>
+          <span class="player-pill ${dWins ? 'loser' : ''}">${m.aceptante || '—'}${aWins ? '<span class="winner-mark">✓</span>' : ''}</span>
+        </div>
+        ${scoreHTML}
+      </div>`;
+  }).join('');
+}
+
+// ─── RENDER RANKING ───────────────────────────────────────────────────────────
+function renderRanking() {
+  const container = document.getElementById('ranking-content');
+
+  if (!currentRankingFecha || !rankingByFecha[currentRankingFecha]) {
+    container.innerHTML = `<div class="loading-msg">Sin datos de ranking.</div>`;
+    return;
+  }
+
+  const currentPlayers = rankingByFecha[currentRankingFecha];
+
+  // Ranking anterior para calcular variación
+  const currentIdx = rankingFechas.indexOf(currentRankingFecha);
+  const prevFecha = currentIdx > 0 ? rankingFechas[currentIdx - 1] : null;
+  const prevPlayers = prevFecha ? rankingByFecha[prevFecha] : null;
+
+  // Mapa nombre → posición anterior
+  const prevPosMap = {};
+  if (prevPlayers) {
+    prevPlayers.forEach(p => {
+      prevPosMap[p.nombre.toLowerCase()] = parseInt(p.pos) || 0;
+    });
+  }
+
+  // Filtrar por categoría
+  const filtered = currentCategoria === 'todos'
+    ? currentPlayers
+    : currentPlayers.filter(r => r.categoria === currentCategoria);
+
+  if (filtered.length === 0) {
+    container.innerHTML = `<div class="loading-msg">Sin jugadores en esta categoría.</div>`;
+    return;
+  }
+
+  // ¿Hay más de una fecha? (para mostrar u ocultar columna variación)
+  const showVar = rankingFechas.length > 1;
+
+  const rows = filtered.map(p => {
+    const posNum = parseInt(p.pos);
+    const posClass = posNum <= 3 ? 'pos-top' : '';
+    const cat = p.categoria;
+    const badgeClass = cat ? `badge-${cat.toLowerCase()}` : '';
+    const badgeHTML = cat ? `<span class="sector-badge ${badgeClass}">${cat}</span>` : '';
+
+    // Variación
+    let varHTML = '';
+    if (showVar) {
+      const prevPos = prevPosMap[p.nombre.toLowerCase()];
+      if (!prevPos) {
+        varHTML = `<span class="var-new">NEW</span>`;
+      } else {
+        const diff = prevPos - posNum; // positivo = subió
+        if (diff > 0) {
+          varHTML = `<span class="var-up">▲ ${diff}</span>`;
+        } else if (diff < 0) {
+          varHTML = `<span class="var-down">▼ ${Math.abs(diff)}</span>`;
+        } else {
+          varHTML = `<span class="var-same">—</span>`;
+        }
+      }
+    }
+
+    // Partidos G/P acumulados
+    const stats = playerStats[p.nombre] || playerStats[
+      Object.keys(playerStats).find(k => k.toLowerCase() === p.nombre.toLowerCase())
+    ];
+    let recordHTML = '';
+    if (stats) {
+      recordHTML = `<span class="rec-w">${stats.wins}G</span><span class="rec-sep"> / </span><span class="rec-l">${stats.losses}P</span>`;
+    } else {
+      recordHTML = `<span class="var-same">—</span>`;
+    }
+
+    return `
+      <tr>
+        <td class="pos-cell ${posClass}">${p.pos}</td>
+        <td class="player-name">${p.nombre}</td>
+        <td>${badgeHTML}</td>
+        ${showVar ? `<td class="var-cell">${varHTML}</td>` : ''}
+        <td class="record-cell">${recordHTML}</td>
+      </tr>`;
+  }).join('');
+
+  const varHeader = showVar ? `<th class="hide-mobile">Variación</th>` : '';
+
+  container.innerHTML = `
+    <table class="ranking-table">
+      <thead>
+        <tr>
+          <th style="text-align:right;padding-right:1rem">#</th>
+          <th>Jugador</th>
+          <th>Cat.</th>
+          ${varHeader}
+          <th class="hide-mobile">G / P</th>
+        </tr>
+      </thead>
+      <tbody>${rows}</tbody>
+    </table>`;
+}
+
+// ─── UI HELPERS ───────────────────────────────────────────────────────────────
+function showCategoria(cat, btn) {
+  currentCategoria = cat;
+  document.querySelectorAll('.sector-btn').forEach(b => { b.className = 'sector-btn'; });
+  btn.className = cat === 'todos' ? 'sector-btn active-a' : `sector-btn active-${cat.toLowerCase()}`;
+  renderRanking();
+}
+
+function showTab(name, btn) {
+  document.querySelectorAll('.tab').forEach(t => t.classList.remove('active'));
+  document.querySelectorAll('.panel').forEach(p => p.classList.remove('active'));
+  btn.classList.add('active');
+  document.getElementById('panel-' + name).classList.add('active');
+}
+
+function setSyncError() {
+  document.getElementById('sync-dot').classList.remove('live');
+  document.getElementById('sync-text').textContent = 'Sin conexión';
+}
+
+function setSyncOk() {
+  document.getElementById('sync-dot').classList.add('live');
+  const now = new Date();
+  document.getElementById('sync-text').textContent =
+    `Actualizado ${now.toLocaleTimeString('es-AR', {hour:'2-digit', minute:'2-digit'})}`;
+}
+
+// ─── INIT ─────────────────────────────────────────────────────────────────────
+async function loadAll() {
+  await Promise.all([loadRanking(), loadResultados()]);
+  // Re-render ranking luego de tener los stats de resultados
+  renderRanking();
+  setSyncOk();
+}
+
+loadAll();
+setInterval(loadAll, 60000);
+</script>
+</body>
+</html>
