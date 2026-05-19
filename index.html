@@ -4,127 +4,259 @@
 <meta charset="UTF-8">
 <meta name="viewport" content="width=device-width, initial-scale=1.0">
 <title>Ranking Squash Tucumán 2026</title>
-<link href="https://fonts.googleapis.com/css2?family=Bebas+Neue&family=DM+Sans:wght@400;500;600&display=swap" rel="stylesheet">
+<link href="https://fonts.googleapis.com/css2?family=Inter:wght@400;500;600;700&family=Playfair+Display:wght@700;900&display=swap" rel="stylesheet">
 <style>
   :root {
-    --black: #0e0e0e;
-    --white: #f5f2ed;
-    --accent: #c8ff00;
-    --accent-dark: #9fc400;
-    --gray: #1e1e1e;
-    --gray2: #2c2c2c;
-    --gray3: #444;
-    --muted: #888;
-    --sector-a: #c8ff00;
-    --sector-b: #00d4ff;
-    --sector-c: #ff6b35;
-    --sector-d: #c471ed;
+    --black:    #0a0a0a;
+    --white:    #f0ede8;
+    --accent:   #c8ff00;
+    --gray:     #161616;
+    --gray2:    #242424;
+    --gray3:    #3a3a3a;
+    --muted:    #777;
+    --cat-a:    #c8ff00;
+    --cat-b:    #00d4ff;
+    --cat-c:    #ff6b35;
+    --cat-d:    #c471ed;
   }
-  * { box-sizing: border-box; margin: 0; padding: 0; }
-  body { background: var(--black); color: var(--white); font-family: 'DM Sans', sans-serif; min-height: 100vh; }
+  * { box-sizing:border-box; margin:0; padding:0; }
+  body {
+    background:var(--black); color:var(--white);
+    font-family:'Inter',sans-serif; min-height:100vh;
+    -webkit-font-smoothing:antialiased;
+  }
 
+  /* ── HEADER ── */
   header {
-    background: var(--gray); border-bottom: 2px solid var(--accent);
-    padding: 0 2rem; display: flex; align-items: center; justify-content: space-between;
-    gap: 1rem; position: sticky; top: 0; z-index: 100;
+    background:var(--gray);
+    border-bottom:1px solid #2a2a2a;
+    padding:0 2rem;
+    display:flex; align-items:center; justify-content:space-between;
+    gap:1rem; position:sticky; top:0; z-index:100;
+    box-shadow:0 2px 20px rgba(0,0,0,.5);
   }
-  .logo-area { display: flex; align-items: center; gap: 1rem; padding: 1rem 0; }
-  .logo-icon { width:42px; height:42px; background:var(--accent); border-radius:50%; display:flex; align-items:center; justify-content:center; flex-shrink:0; }
-  .logo-icon svg { width:22px; height:22px; }
-  .logo-text h1 { font-family:'Bebas Neue',sans-serif; font-size:1.6rem; letter-spacing:2px; color:var(--accent); line-height:1; }
-  .logo-text p { font-size:0.7rem; color:var(--muted); letter-spacing:3px; text-transform:uppercase; }
-  .sync-status { font-size:0.72rem; color:var(--muted); display:flex; align-items:center; gap:6px; }
-  .dot { width:7px; height:7px; border-radius:50%; background:var(--muted); }
+  .logo-area { display:flex; align-items:center; gap:12px; padding:14px 0; }
+
+  /* Logo ATS — reemplazá el src cuando tengas el archivo */
+  .logo-img {
+    width:44px; height:44px;
+    object-fit:contain; flex-shrink:0;
+    /* SVG placeholder inline si no hay imagen */
+    display:flex; align-items:center; justify-content:center;
+  }
+  .logo-svg-placeholder {
+    width:44px; height:44px; flex-shrink:0;
+  }
+
+  .logo-text { line-height:1; }
+  .logo-text h1 {
+    font-family:'Playfair Display',serif;
+    font-size:1.25rem; font-weight:900;
+    color:var(--white); letter-spacing:0.5px;
+  }
+  .logo-text h1 span { color:var(--accent); }
+  .logo-text p {
+    font-size:0.65rem; color:var(--muted);
+    letter-spacing:3px; text-transform:uppercase;
+    margin-top:2px;
+  }
+
+  .sync-status { font-size:0.72rem; color:var(--muted); display:flex; align-items:center; gap:6px; white-space:nowrap; }
+  .dot { width:7px; height:7px; border-radius:50%; background:var(--muted); flex-shrink:0; }
   .dot.live { background:var(--accent); animation:pulse 2s infinite; }
   @keyframes pulse { 0%,100%{opacity:1} 50%{opacity:0.3} }
 
-  nav { background:var(--gray); border-bottom:1px solid var(--gray3); display:flex; padding:0 2rem; overflow-x:auto; scrollbar-width:none; }
+  /* ── NAV ── */
+  nav {
+    background:var(--gray); border-bottom:1px solid #222;
+    display:flex; padding:0 2rem;
+    overflow-x:auto; scrollbar-width:none;
+  }
   nav::-webkit-scrollbar { display:none; }
-  .tab { padding:0.85rem 1.4rem; font-size:0.85rem; font-weight:500; letter-spacing:1px; text-transform:uppercase; cursor:pointer; color:var(--muted); border-bottom:2px solid transparent; transition:all 0.2s; white-space:nowrap; background:none; border-top:none; border-left:none; border-right:none; }
+  .tab {
+    padding:0.9rem 1.5rem; font-size:0.8rem; font-weight:600;
+    letter-spacing:1.5px; text-transform:uppercase;
+    cursor:pointer; color:var(--muted);
+    border-bottom:2px solid transparent;
+    transition:all 0.2s; white-space:nowrap;
+    background:none; border-top:none; border-left:none; border-right:none;
+    font-family:'Inter',sans-serif;
+  }
   .tab:hover { color:var(--white); }
   .tab.active { color:var(--accent); border-bottom-color:var(--accent); }
 
-  main { max-width:980px; margin:0 auto; padding:2rem 1.5rem; }
+  /* ── LAYOUT ── */
+  main { max-width:1000px; margin:0 auto; padding:2rem 1.5rem; }
   .panel { display:none; }
   .panel.active { display:block; }
 
-  .sector-tabs { display:flex; gap:8px; margin-bottom:1.2rem; flex-wrap:wrap; }
-  .sector-btn { padding:6px 18px; border-radius:20px; font-size:0.8rem; font-weight:600; letter-spacing:1px; cursor:pointer; border:1.5px solid transparent; background:var(--gray2); color:var(--muted); transition:all 0.2s; font-family:'DM Sans',sans-serif; }
-  .sector-btn:hover { color:var(--white); }
-  .sector-btn.active-a { background:#1a2200; color:var(--sector-a); border-color:var(--sector-a); }
-  .sector-btn.active-b { background:#001e26; color:var(--sector-b); border-color:var(--sector-b); }
-  .sector-btn.active-c { background:#260d00; color:var(--sector-c); border-color:var(--sector-c); }
-  .sector-btn.active-d { background:#1a0026; color:var(--sector-d); border-color:var(--sector-d); }
+  /* ── CATEGORY PILLS ── */
+  .sector-tabs { display:flex; gap:8px; margin-bottom:1.4rem; flex-wrap:wrap; }
+  .sector-btn {
+    padding:5px 16px; border-radius:20px;
+    font-size:0.75rem; font-weight:600; letter-spacing:1px;
+    cursor:pointer; border:1.5px solid transparent;
+    background:var(--gray2); color:var(--muted);
+    transition:all 0.2s; font-family:'Inter',sans-serif;
+  }
+  .sector-btn:hover { color:var(--white); border-color:var(--gray3); }
+  .sector-btn.active-a { background:#1a2200; color:var(--cat-a); border-color:var(--cat-a); }
+  .sector-btn.active-b { background:#001e26; color:var(--cat-b); border-color:var(--cat-b); }
+  .sector-btn.active-c { background:#260d00; color:var(--cat-c); border-color:var(--cat-c); }
+  .sector-btn.active-d { background:#1a0026; color:var(--cat-d); border-color:var(--cat-d); }
 
-  .date-bar { display:flex; align-items:center; justify-content:space-between; gap:1rem; margin-bottom:1.4rem; flex-wrap:wrap; }
+  /* ── DATE BAR ── */
+  .date-bar {
+    display:flex; align-items:center; justify-content:space-between;
+    gap:1rem; margin-bottom:1.4rem; flex-wrap:wrap;
+  }
   .date-nav { display:flex; align-items:center; gap:8px; }
-  .date-label { font-size:0.75rem; letter-spacing:2px; text-transform:uppercase; color:var(--muted); font-weight:600; }
-  .date-nav-btn { background:var(--gray2); color:var(--white); border:1px solid var(--gray3); border-radius:6px; width:32px; height:32px; display:flex; align-items:center; justify-content:center; cursor:pointer; font-size:1rem; transition:all 0.15s; font-family:'DM Sans',sans-serif; }
+  .date-label { font-size:0.7rem; font-weight:600; letter-spacing:2px; text-transform:uppercase; color:var(--muted); }
+  .date-nav-btn {
+    background:var(--gray2); color:var(--white);
+    border:1px solid var(--gray3); border-radius:6px;
+    width:30px; height:30px; display:flex; align-items:center; justify-content:center;
+    cursor:pointer; font-size:1rem; transition:all 0.15s; font-family:'Inter',sans-serif;
+  }
   .date-nav-btn:hover:not(:disabled) { border-color:var(--accent); color:var(--accent); }
-  .date-nav-btn:disabled { opacity:0.25; cursor:default; }
-  .fecha-select { background:var(--gray2); color:var(--white); border:1px solid var(--gray3); border-radius:8px; padding:7px 14px; font-size:0.88rem; font-family:'DM Sans',sans-serif; cursor:pointer; outline:none; transition:border-color 0.2s; }
+  .date-nav-btn:disabled { opacity:0.2; cursor:default; }
+  .fecha-select {
+    background:var(--gray2); color:var(--white);
+    border:1px solid var(--gray3); border-radius:8px;
+    padding:6px 12px; font-size:0.85rem;
+    font-family:'Inter',sans-serif; cursor:pointer; outline:none;
+    transition:border-color 0.2s;
+  }
   .fecha-select:hover { border-color:var(--accent); }
 
-  .legend { display:flex; gap:1rem; flex-wrap:wrap; font-size:0.72rem; color:var(--muted); align-items:center; }
+  /* ── LEGEND ── */
+  .legend { display:flex; gap:1rem; flex-wrap:wrap; font-size:0.7rem; color:var(--muted); align-items:center; }
   .legend span { display:flex; align-items:center; gap:3px; }
 
+  /* ── RANKING TABLE ── */
   .ranking-table-wrap { overflow-x:auto; }
   .ranking-table { width:100%; border-collapse:collapse; }
-  .ranking-table thead tr { border-bottom:1px solid var(--gray3); }
-  .ranking-table th { text-align:left; font-size:0.7rem; font-weight:600; letter-spacing:2px; text-transform:uppercase; color:var(--muted); padding:0 0.8rem 0.75rem; }
+  .ranking-table thead tr { border-bottom:1px solid #2a2a2a; }
+  .ranking-table th {
+    text-align:left; font-size:0.65rem; font-weight:700;
+    letter-spacing:2px; text-transform:uppercase;
+    color:var(--muted); padding:0 0.7rem 0.8rem;
+  }
   .ranking-table th:first-child { padding-left:0; }
-  .ranking-table tbody tr { border-bottom:1px solid #1a1a1a; transition:background 0.15s; }
+  .ranking-table tbody tr { border-bottom:1px solid #181818; transition:background 0.15s; }
   .ranking-table tbody tr:hover { background:var(--gray2); }
-  .ranking-table td { padding:0.8rem 0.8rem; font-size:0.92rem; }
+  .ranking-table td { padding:0.7rem 0.7rem; font-size:0.9rem; vertical-align:middle; }
   .ranking-table td:first-child { padding-left:0; }
 
-  .pos-cell { font-family:'Bebas Neue',sans-serif; font-size:1.4rem; color:var(--gray3); width:44px; text-align:right; padding-right:0.8rem !important; }
+  /* ── AVATAR ── */
+  .avatar-cell { width:44px; padding-right:0 !important; }
+  .avatar {
+    width:36px; height:36px; border-radius:50%;
+    background:var(--gray2); border:1.5px solid var(--gray3);
+    overflow:hidden; display:flex; align-items:center; justify-content:center;
+    flex-shrink:0; font-size:0.8rem; font-weight:700; color:var(--muted);
+    text-transform:uppercase;
+  }
+  .avatar img { width:100%; height:100%; object-fit:cover; }
+  .avatar.cat-a { border-color:var(--cat-a); }
+  .avatar.cat-b { border-color:var(--cat-b); }
+  .avatar.cat-c { border-color:var(--cat-c); }
+  .avatar.cat-d { border-color:var(--cat-d); }
+
+  /* ── POSITION ── */
+  .pos-cell {
+    font-family:'Playfair Display',serif;
+    font-size:1.35rem; font-weight:700; color:var(--gray3);
+    width:40px; text-align:right; padding-right:0.6rem !important;
+    line-height:1;
+  }
   .pos-top { color:var(--accent); }
-  .player-name { font-weight:500; }
 
-  .sector-badge { display:inline-block; padding:2px 10px; border-radius:10px; font-size:0.7rem; font-weight:600; letter-spacing:1px; }
-  .badge-a { background:#1a2200; color:var(--sector-a); }
-  .badge-b { background:#001e26; color:var(--sector-b); }
-  .badge-c { background:#260d00; color:var(--sector-c); }
-  .badge-d { background:#1a0026; color:var(--sector-d); }
+  /* ── PLAYER NAME ── */
+  .player-name { font-weight:500; font-size:0.9rem; }
+  .player-cat-pos {
+    font-size:0.7rem; color:var(--muted); margin-top:1px;
+    /* posición dentro de la categoría, se muestra solo en vista Todos */
+  }
 
-  .var-cell { font-size:0.82rem; font-weight:600; white-space:nowrap; min-width:60px; }
+  /* ── CATEGORY BADGE ── */
+  .sector-badge {
+    display:inline-block; padding:2px 9px;
+    border-radius:10px; font-size:0.68rem; font-weight:600; letter-spacing:1px;
+  }
+  .badge-a { background:#1a2200; color:var(--cat-a); }
+  .badge-b { background:#001e26; color:var(--cat-b); }
+  .badge-c { background:#260d00; color:var(--cat-c); }
+  .badge-d { background:#1a0026; color:var(--cat-d); }
+
+  /* ── VARIACIÓN ── */
+  .var-cell { font-size:0.8rem; font-weight:600; white-space:nowrap; min-width:58px; }
   .var-up   { color:#4dff91; }
   .var-down { color:#ff5c5c; }
   .var-same { color:var(--muted); }
-  .var-new  { color:var(--sector-b); font-size:0.7rem; letter-spacing:1px; font-weight:700; }
+  .var-new  { color:var(--cat-b); font-size:0.68rem; letter-spacing:1px; font-weight:700; }
 
-  .record-cell { font-size:0.82rem; white-space:nowrap; }
-  .rec-w { color:#4dff91; font-weight:700; }
-  .rec-l { color:#ff5c5c; font-weight:700; }
-  .rec-sep { color:var(--muted); margin:0 1px; }
+  /* ── STATS ── */
+  .stats-cell { font-size:0.8rem; white-space:nowrap; }
+  .rec-w  { color:#4dff91; font-weight:700; }
+  .rec-l  { color:#ff5c5c; font-weight:700; }
+  .rec-gf { color:var(--accent); font-weight:600; }
+  .rec-sep { color:var(--muted); margin:0 2px; }
 
+  /* ── RESULTADOS ── */
   .res-controls { display:flex; align-items:center; gap:1rem; margin-bottom:1.5rem; flex-wrap:wrap; }
-  .res-controls label { font-size:0.8rem; letter-spacing:2px; text-transform:uppercase; color:var(--muted); font-weight:600; }
-  .match-grid { display:grid; gap:10px; }
-  .match-card { background:var(--gray); border-radius:10px; padding:0.9rem 1.2rem; display:flex; align-items:center; gap:1rem; border:1px solid var(--gray2); }
+  .res-controls label { font-size:0.75rem; font-weight:600; letter-spacing:2px; text-transform:uppercase; color:var(--muted); }
+  .match-grid { display:grid; gap:8px; }
+  .match-card {
+    background:var(--gray); border-radius:10px;
+    padding:0.85rem 1.2rem;
+    display:flex; align-items:center; gap:1rem;
+    border:1px solid #222;
+  }
   .match-players { flex:1; display:flex; align-items:center; gap:0.5rem; flex-wrap:wrap; }
-  .player-pill { font-size:0.9rem; font-weight:500; }
-  .vs-sep { font-size:0.7rem; color:var(--muted); font-weight:600; letter-spacing:1px; }
-  .match-score { font-family:'Bebas Neue',sans-serif; font-size:1.5rem; color:var(--accent); letter-spacing:2px; white-space:nowrap; min-width:52px; text-align:right; }
-  .match-score.pending { font-size:0.75rem; font-family:'DM Sans',sans-serif; color:var(--muted); font-weight:500; letter-spacing:1px; text-transform:uppercase; display:flex; align-items:center; }
-  .winner-mark { color:var(--accent); font-size:0.75rem; margin-left:4px; }
+  .player-pill { font-size:0.88rem; font-weight:500; }
+  .vs-sep { font-size:0.68rem; color:var(--muted); font-weight:700; letter-spacing:1px; }
+  .match-score {
+    font-family:'Playfair Display',serif;
+    font-size:1.4rem; font-weight:700; color:var(--accent);
+    letter-spacing:2px; white-space:nowrap; min-width:50px; text-align:right;
+  }
+  .match-score.pending {
+    font-size:0.72rem; font-family:'Inter',sans-serif;
+    color:var(--muted); font-weight:500; letter-spacing:1px; text-transform:uppercase;
+  }
+  .winner-mark { color:var(--accent); font-size:0.72rem; margin-left:4px; }
   .loser { color:var(--muted); }
 
-  .rules-card { background:var(--gray); border-radius:12px; padding:2rem; border:1px solid var(--gray3); line-height:1.8; }
-  .rules-card h2 { font-family:'Bebas Neue',sans-serif; font-size:1.6rem; color:var(--accent); letter-spacing:2px; margin-bottom:1.5rem; }
+  /* ── REGLAMENTO ── */
+  .rules-card {
+    background:var(--gray); border-radius:12px;
+    padding:2rem; border:1px solid #222; line-height:1.85;
+  }
+  .rules-card h2 {
+    font-family:'Playfair Display',serif;
+    font-size:2rem; font-weight:900; color:var(--white);
+    margin-bottom:0.3rem;
+  }
+  .rules-card h2 span { color:var(--accent); }
+  .rules-card .subtitle { font-size:0.75rem; color:var(--muted); letter-spacing:2px; text-transform:uppercase; margin-bottom:1.8rem; }
   .rules-card ol { padding-left:1.2rem; }
-  .rules-card li { font-size:0.92rem; color:#ccc; margin-bottom:1rem; padding-left:0.5rem; }
+  .rules-card li { font-size:0.9rem; color:#bbb; margin-bottom:1rem; padding-left:0.4rem; }
   .rules-card li strong { color:var(--white); }
 
-  .loading-msg,.error-msg { text-align:center; padding:3rem; color:var(--muted); font-size:0.9rem; letter-spacing:1px; }
+  .loading-msg,.error-msg {
+    text-align:center; padding:3rem; color:var(--muted); font-size:0.9rem; letter-spacing:1px;
+  }
   .error-msg { color:#ff6b6b; }
 
-  @media (max-width:600px) {
-    header { padding:0 1rem; } nav { padding:0 1rem; } main { padding:1.5rem 1rem; }
-    .match-card { flex-direction:column; align-items:flex-start; gap:0.5rem; }
+  @media (max-width:640px) {
+    header { padding:0 1rem; }
+    nav    { padding:0 1rem; }
+    main   { padding:1.5rem 1rem; }
+    .match-card { flex-direction:column; align-items:flex-start; gap:0.4rem; }
     .match-score { text-align:left; }
-    .hide-xs { display:none; }
+    .hide-xs { display:none !important; }
+    .logo-text h1 { font-size:1.1rem; }
   }
 </style>
 </head>
@@ -132,14 +264,28 @@
 
 <header>
   <div class="logo-area">
-    <div class="logo-icon">
-      <svg viewBox="0 0 24 24" fill="none" xmlns="http://www.w3.org/2000/svg">
-        <circle cx="12" cy="12" r="10" stroke="#0e0e0e" stroke-width="2"/>
-        <path d="M5 12 Q12 4 19 12 Q12 20 5 12Z" fill="#0e0e0e"/>
-      </svg>
-    </div>
+    <!--
+      Para agregar el logo real:
+      1. Subí el archivo a tu repo (ej: assets/logo-ats.png)
+      2. Reemplazá el SVG de abajo por: <img class="logo-img" src="assets/logo-ats.png" alt="ATS">
+    -->
+    <svg class="logo-svg-placeholder" viewBox="0 0 44 44" fill="none" xmlns="http://www.w3.org/2000/svg">
+      <circle cx="22" cy="22" r="21" fill="#1a1a1a" stroke="#c8ff00" stroke-width="1.5"/>
+      <circle cx="22" cy="22" r="14" fill="none" stroke="#c8ff00" stroke-width="1" stroke-dasharray="3 2"/>
+      <!-- Raqueta -->
+      <ellipse cx="22" cy="17" rx="7" ry="9" fill="none" stroke="#c8ff00" stroke-width="1.5"/>
+      <line x1="22" y1="26" x2="22" y2="35" stroke="#c8ff00" stroke-width="2" stroke-linecap="round"/>
+      <line x1="19" y1="32" x2="25" y2="32" stroke="#c8ff00" stroke-width="1.5" stroke-linecap="round"/>
+      <!-- Cuerdas -->
+      <line x1="22" y1="8" x2="22" y2="26" stroke="#c8ff00" stroke-width="0.8" stroke-opacity="0.5"/>
+      <line x1="15" y1="14" x2="29" y2="14" stroke="#c8ff00" stroke-width="0.8" stroke-opacity="0.5"/>
+      <line x1="15" y1="18" x2="29" y2="18" stroke="#c8ff00" stroke-width="0.8" stroke-opacity="0.5"/>
+      <line x1="15" y1="22" x2="29" y2="22" stroke="#c8ff00" stroke-width="0.8" stroke-opacity="0.5"/>
+      <line x1="17" y1="10" x2="17" y2="26" stroke="#c8ff00" stroke-width="0.8" stroke-opacity="0.5"/>
+      <line x1="27" y1="10" x2="27" y2="26" stroke="#c8ff00" stroke-width="0.8" stroke-opacity="0.5"/>
+    </svg>
     <div class="logo-text">
-      <h1>Ranking 2026</h1>
+      <h1>Ranking <span>2026</span></h1>
       <p>Squash · Tucumán</p>
     </div>
   </div>
@@ -159,6 +305,7 @@
 
   <!-- ══ RANKING ══ -->
   <div class="panel active" id="panel-ranking">
+
     <div class="sector-tabs">
       <button class="sector-btn active-a" onclick="showCat('todos',this)">Todos</button>
       <button class="sector-btn" onclick="showCat('A',this)">Categoría A</button>
@@ -177,11 +324,11 @@
         <button class="date-nav-btn" id="btn-next" onclick="navFecha(1)">&#8250;</button>
       </div>
       <div class="legend">
-        <span><b style="color:#4dff91">▲</b>&nbsp;vs anterior</span>
-        <span><b style="color:#ff5c5c">▼</b>&nbsp;vs anterior</span>
-        <span><b style="color:var(--sector-b);font-size:0.7rem">NEW</b>&nbsp;nuevo</span>
-        <span class="hide-xs"><b style="color:var(--accent)">△/▽</b>&nbsp;vs inicio</span>
-        <span><b class="rec-w">G</b><span class="rec-sep">/</span><b class="rec-l">P</b>&nbsp;partidos</span>
+        <span><b style="color:#4dff91">▲</b> vs anterior</span>
+        <span><b style="color:#ff5c5c">▼</b> vs anterior</span>
+        <span><b style="color:var(--cat-b);font-size:0.68rem">NEW</b> nuevo</span>
+        <span class="hide-xs"><b style="color:var(--accent)">△/▽</b> vs inicio</span>
+        <span><b class="rec-gf">GF</b> games a favor</span>
       </div>
     </div>
 
@@ -206,7 +353,8 @@
   <!-- ══ REGLAMENTO ══ -->
   <div class="panel" id="panel-reglamento">
     <div class="rules-card">
-      <h2>Reglamento</h2>
+      <h2>Regla<span>mento</span></h2>
+      <p class="subtitle">Temporada 2026 · Asociación Tucumana de Squash</p>
       <ol>
         <li>El Ranking se publicará en los canales de difusión de la asociación.</li>
         <li>Los jugadores de ranking <strong>"par"</strong> deberán desafiar al de ranking <strong>"impar"</strong> ubicado 3 puestos más arriba. El impar debe aceptarlo.</li>
@@ -228,25 +376,28 @@
 </main>
 
 <script>
-// ═══════════════════════════════════════════════════
+// ═══════════════════════════════════════════
 //  CONFIG
-// ═══════════════════════════════════════════════════
+// ═══════════════════════════════════════════
 const CSV_RANKING    = 'https://docs.google.com/spreadsheets/d/e/2PACX-1vRgJZBlL0j97a5N6k-9QzHZoAexu61_Ti73MVgIHptaLHE4YgwXFT1iW5f01XAofbI9elMnCpAT3Slj/pub?gid=1935327508&single=true&output=csv';
 const CSV_RESULTADOS = 'https://docs.google.com/spreadsheets/d/e/2PACX-1vRgJZBlL0j97a5N6k-9QzHZoAexu61_Ti73MVgIHptaLHE4YgwXFT1iW5f01XAofbI9elMnCpAT3Slj/pub?gid=0&single=true&output=csv';
+// Cuando agregues la pestaña FOTOS, poner el gid acá:
+const CSV_FOTOS      = ''; // ej: '...pub?gid=XXXXXXX&single=true&output=csv'
 
-// ═══════════════════════════════════════════════════
+// ═══════════════════════════════════════════
 //  STATE
-// ═══════════════════════════════════════════════════
-let rankingByFecha = {};   // { "FECHA 1": [{pos,nombre,categoria},...], ... }
-let fechaKeys      = [];   // en orden de aparición en la planilla
+// ═══════════════════════════════════════════
+let rankingByFecha = {};
+let fechaKeys      = [];
 let currentFecha   = null;
 let resultadosData = [];
-let playerStats    = {};   // { nombre: {wins,losses} }
+let playerStats    = {};   // { nombre: {wins,losses,gf} }  gf = games a favor
+let playerPhotos   = {};   // { nombre_norm: url }
 let currentCat     = 'todos';
 
-// ═══════════════════════════════════════════════════
+// ═══════════════════════════════════════════
 //  CSV PARSER
-// ═══════════════════════════════════════════════════
+// ═══════════════════════════════════════════
 function parseCSV(text) {
   return text.trim().split('\n').map(line => {
     const cols = []; let cur = '', inQ = false;
@@ -265,52 +416,48 @@ async function fetchCSV(url) {
   return parseCSV(await r.text());
 }
 
-// ═══════════════════════════════════════════════════
+// ═══════════════════════════════════════════
 //  LOAD RANKING
-//  Estructura:
-//    Fila 0: "FECHA 1","","","FECHA 2","","","FECHA 3",...
-//    Fila 1: "Posición","Nombre","Categoría",  "Posición","Nombre","Categoría", ...
-//    Fila 2+: datos
-// ═══════════════════════════════════════════════════
+//  Fila 0: "FECHA 1","","","FECHA 2","","", ...
+//  Fila 1: "Posición","Nombre","Categoría",  "Posición","Nombre","Categoría", ...
+//  Fila 2+: datos
+// ═══════════════════════════════════════════
 async function loadRanking() {
   const rows = await fetchCSV(CSV_RANKING);
   if (rows.length < 3) throw new Error('Planilla de ranking vacía');
 
-  const header1  = rows[0];   // nombres de fecha
-  const header2  = rows[1];   // sub-headers por columna
+  const header1  = rows[0];
+  const header2  = rows[1];
   const dataRows = rows.slice(2);
 
   rankingByFecha = {};
   fechaKeys      = [];
 
-  // Recorrer header1 y detectar cada grupo
   let col = 0;
   while (col < header1.length) {
     const fechaLabel = (header1[col] || '').toString().trim();
     if (!fechaLabel) { col++; continue; }
 
-    // El grupo abarca hasta la próxima celda no vacía en header1
     let groupEnd = col + 1;
     while (groupEnd < header1.length && !(header1[groupEnd] || '').toString().trim()) groupEnd++;
 
-    // Identificar offsets dentro del grupo usando header2
     let posOff = 0, nomOff = 1, catOff = 2;
     for (let c = col; c < groupEnd; c++) {
       const h = (header2[c] || '').toString().toUpperCase().trim();
-      if (h.includes('POS') || h === '#')                          posOff = c - col;
-      else if (h.includes('NOM') || h.includes('JUGAD'))          nomOff = c - col;
-      else if (h.includes('CAT') || h.includes('GRUP'))           catOff = c - col;
+      if      (h.includes('POS') || h === '#')             posOff = c - col;
+      else if (h.includes('NOM') || h.includes('JUGAD'))   nomOff = c - col;
+      else if (h.includes('CAT') || h.includes('GRUP'))    catOff = c - col;
     }
 
     const players = [];
     for (const row of dataRows) {
       const nombre = (row[col + nomOff] || '').toString().trim();
       const pos    = (row[col + posOff] || '').toString().trim();
-      if (!nombre && !pos) continue;
       if (!nombre) continue;
       const catRaw = (row[col + catOff] || '').toString().trim().toUpperCase();
       players.push({
         pos,
+        posNum: parseInt(pos) || 0,
         nombre,
         categoria: ['A','B','C','D'].includes(catRaw) ? catRaw : '',
       });
@@ -328,9 +475,9 @@ async function loadRanking() {
   populateFechaSelect();
 }
 
-// ═══════════════════════════════════════════════════
+// ═══════════════════════════════════════════
 //  LOAD RESULTADOS
-// ═══════════════════════════════════════════════════
+// ═══════════════════════════════════════════
 async function loadResultados() {
   const rows = await fetchCSV(CSV_RESULTADOS);
   resultadosData = [];
@@ -344,18 +491,20 @@ async function loadResultados() {
     const ace = (row[2]||'').toString().trim();
     const gd  = (row[3] !== undefined && row[3] !== '') ? row[3].toString().trim() : null;
     const ga  = (row[4] !== undefined && row[4] !== '') ? row[4].toString().trim() : null;
-    resultadosData.push({ fecha, desafiante: des, aceptante: ace, games_d: gd, games_a: ga });
+    resultadosData.push({ fecha, desafiante:des, aceptante:ace, games_d:gd, games_a:ga });
 
     const gdn = gd !== null ? parseInt(gd) : NaN;
     const gan = ga !== null ? parseInt(ga) : NaN;
     if (!isNaN(gdn) && !isNaN(gan) && (gdn > 0 || gan > 0)) {
       if (des) {
-        if (!playerStats[des]) playerStats[des] = {wins:0,losses:0};
+        if (!playerStats[des]) playerStats[des] = {wins:0, losses:0, gf:0};
         gdn > gan ? playerStats[des].wins++ : playerStats[des].losses++;
+        playerStats[des].gf += gdn;
       }
       if (ace) {
-        if (!playerStats[ace]) playerStats[ace] = {wins:0,losses:0};
+        if (!playerStats[ace]) playerStats[ace] = {wins:0, losses:0, gf:0};
         gan > gdn ? playerStats[ace].wins++ : playerStats[ace].losses++;
+        playerStats[ace].gf += gan;
       }
     }
   });
@@ -366,12 +515,32 @@ async function loadResultados() {
   });
   const sel = document.getElementById('fecha-res-sel');
   sel.innerHTML = fechas.map(f => `<option value="${f}">Fecha ${f}</option>`).join('');
-  if (fechas.length) sel.value = fechas[fechas.length-1];
+  if (fechas.length) sel.value = fechas[fechas.length - 1];
 }
 
-// ═══════════════════════════════════════════════════
+// ═══════════════════════════════════════════
+//  LOAD FOTOS (opcional — cuando haya CSV)
+//  Estructura pestaña FOTOS: NOMBRE | URL_FOTO
+// ═══════════════════════════════════════════
+async function loadFotos() {
+  if (!CSV_FOTOS) return;
+  try {
+    const rows = await fetchCSV(CSV_FOTOS);
+    playerPhotos = {};
+    rows.forEach((row, i) => {
+      if (i === 0) return;
+      const nombre = (row[0]||'').toString().trim();
+      const url    = (row[1]||'').toString().trim();
+      if (nombre && url) playerPhotos[norm(nombre)] = url;
+    });
+  } catch(e) {
+    console.warn('No se pudieron cargar las fotos:', e.message);
+  }
+}
+
+// ═══════════════════════════════════════════
 //  RENDER RANKING
-// ═══════════════════════════════════════════════════
+// ═══════════════════════════════════════════
 function renderRanking() {
   const container = document.getElementById('ranking-content');
   const players = rankingByFecha[currentFecha];
@@ -382,94 +551,132 @@ function renderRanking() {
   const firstKey = fechaKeys[0];
   const isFirst  = curIdx === 0;
   const hasMulti = fechaKeys.length > 1;
+  const showAllCats = currentCat === 'todos';
 
   const prevMap  = buildPosMap(prevKey  ? rankingByFecha[prevKey]  : null);
   const firstMap = buildPosMap(rankingByFecha[firstKey]);
 
-  const filtered = currentCat === 'todos' ? players : players.filter(p => p.categoria === currentCat);
+  // Filtrar
+  const filtered = showAllCats ? players : players.filter(p => p.categoria === currentCat);
   if (!filtered.length) {
     container.innerHTML = '<div class="loading-msg">Sin jugadores en esta categoría.</div>';
     return;
   }
 
-  const tRows = filtered.map(p => {
-    const posNum   = parseInt(p.pos) || 0;
-    const posClass = posNum <= 3 ? 'pos-top' : '';
-    const badgeHTML = p.categoria
+  // Calcular posición dentro de la categoría (renumerada 1,2,3...)
+  // Para vista "todos" mostramos la posición general pero también la de categoría
+  // Para vista de una categoría, la posición mostrada es la de esa categoría
+  const catPosMap = {};  // nombre → posición dentro de su categoría
+  if (showAllCats) {
+    const catCounters = {A:0, B:0, C:0, D:0};
+    // Ordenar por posición general para asignar posición de categoría en orden
+    const sorted = [...players].sort((a,b) => (a.posNum||99) - (b.posNum||99));
+    for (const p of sorted) {
+      if (p.categoria && catCounters[p.categoria] !== undefined) {
+        catCounters[p.categoria]++;
+        catPosMap[norm(p.nombre)] = catCounters[p.categoria];
+      }
+    }
+  }
+
+  const tRows = filtered.map((p, idx) => {
+    // Posición a mostrar: si estamos en vista de categoría, es idx+1
+    const displayPos = showAllCats ? (p.pos || '—') : String(idx + 1);
+    const posNumDisplay = showAllCats ? p.posNum : (idx + 1);
+    const posClass = posNumDisplay <= 3 ? 'pos-top' : '';
+
+    // Badge categoría (solo en vista Todos)
+    const badgeHTML = (p.categoria && showAllCats)
       ? `<span class="sector-badge badge-${p.categoria.toLowerCase()}">${p.categoria}</span>`
       : '';
 
-    // ── vs fecha anterior ──
+    // Sub-texto: pos en categoría (solo en vista Todos)
+    const catPos = catPosMap[norm(p.nombre)];
+    const catPosText = (showAllCats && p.categoria && catPos)
+      ? `<div class="player-cat-pos">#${catPos} en Cat. ${p.categoria}</div>`
+      : '';
+
+    // Avatar
+    const photoUrl = playerPhotos[norm(p.nombre)];
+    const initials = p.nombre.trim().split(' ').map(w=>w[0]).slice(0,2).join('').toUpperCase();
+    const catClass = p.categoria ? `cat-${p.categoria.toLowerCase()}` : '';
+    const avatarInner = photoUrl
+      ? `<img src="${photoUrl}" alt="${p.nombre}" onerror="this.parentElement.textContent='${initials}'">`
+      : initials;
+    const avatarHTML = `<div class="avatar ${catClass}">${avatarInner}</div>`;
+
+    // Variación vs anterior
     let varPrevHTML = '<span class="var-same">—</span>';
     if (hasMulti && !isFirst) {
       const prev = prevMap[norm(p.nombre)];
       if (prev === undefined) {
         varPrevHTML = '<span class="var-new">NEW</span>';
       } else {
-        const d = prev - posNum;
-        varPrevHTML = d > 0
-          ? `<span class="var-up">▲ ${d}</span>`
-          : d < 0
-          ? `<span class="var-down">▼ ${Math.abs(d)}</span>`
-          : '<span class="var-same">—</span>';
+        const d = prev - p.posNum;
+        varPrevHTML = d > 0 ? `<span class="var-up">▲ ${d}</span>`
+                   : d < 0 ? `<span class="var-down">▼ ${Math.abs(d)}</span>`
+                   : '<span class="var-same">—</span>';
       }
     }
 
-    // ── vs primera fecha ──
+    // Variación vs inicio
     let varInicioHTML = '';
     if (hasMulti && curIdx > 0) {
       const first = firstMap[norm(p.nombre)];
       if (first === undefined) {
         varInicioHTML = '<span class="var-new" title="No estaba al inicio">NEW</span>';
       } else {
-        const d = first - posNum;
-        varInicioHTML = d > 0
-          ? `<span class="var-up" title="Desde inicio del ranking">▲ ${d}</span>`
-          : d < 0
-          ? `<span class="var-down" title="Desde inicio del ranking">▼ ${Math.abs(d)}</span>`
-          : '<span class="var-same" title="Igual que al inicio">—</span>';
+        const d = first - p.posNum;
+        varInicioHTML = d > 0 ? `<span class="var-up" title="Desde inicio">▲ ${d}</span>`
+                     : d < 0 ? `<span class="var-down" title="Desde inicio">▼ ${Math.abs(d)}</span>`
+                     : '<span class="var-same">—</span>';
       }
     }
 
-    // ── G/P ──
+    // Stats: G / P / GF
     const stats = getStats(p.nombre);
     const recHTML = stats
-      ? `<span class="rec-w">${stats.wins}G</span><span class="rec-sep"> / </span><span class="rec-l">${stats.losses}P</span>`
+      ? `<span class="rec-w">${stats.wins}G</span><span class="rec-sep">/</span><span class="rec-l">${stats.losses}P</span><span class="rec-sep"> · </span><span class="rec-gf">${stats.gf}GF</span>`
       : '<span class="var-same">—</span>';
 
     const tdPrev   = hasMulti ? `<td class="var-cell">${varPrevHTML}</td>` : '';
     const tdInicio = (hasMulti && curIdx > 0) ? `<td class="var-cell hide-xs">${varInicioHTML}</td>` : '';
 
     return `<tr>
-      <td class="pos-cell ${posClass}">${p.pos||'—'}</td>
-      <td class="player-name">${p.nombre}</td>
+      <td class="avatar-cell">${avatarHTML}</td>
+      <td class="pos-cell ${posClass}">${displayPos}</td>
+      <td>
+        <div class="player-name">${p.nombre}</div>
+        ${catPosText}
+      </td>
       <td>${badgeHTML}</td>
       ${tdPrev}
       ${tdInicio}
-      <td class="record-cell">${recHTML}</td>
+      <td class="stats-cell">${recHTML}</td>
     </tr>`;
   }).join('');
 
-  const thPrev   = hasMulti ? `<th class="var-cell">vs anterior</th>` : '';
-  const thInicio = (hasMulti && curIdx > 0) ? `<th class="var-cell hide-xs">vs inicio</th>` : '';
+  const thPrev   = hasMulti ? `<th>Var. ant.</th>` : '';
+  const thInicio = (hasMulti && curIdx > 0) ? `<th class="hide-xs">Vs inicio</th>` : '';
 
   container.innerHTML = `
     <table class="ranking-table">
       <thead><tr>
-        <th style="text-align:right;padding-right:0.8rem">#</th>
+        <th style="width:44px"></th>
+        <th style="text-align:right;padding-right:0.6rem">#</th>
         <th>Jugador</th>
         <th>Cat.</th>
         ${thPrev}
         ${thInicio}
-        <th>G / P</th>
+        <th>G / P / GF</th>
       </tr></thead>
       <tbody>${tRows}</tbody>
     </table>`;
 }
 
-// ═══════════════════════════════════════════════════
+// ═══════════════════════════════════════════
 //  RENDER RESULTADOS
-// ═══════════════════════════════════════════════════
+// ═══════════════════════════════════════════
 function renderResultados() {
   const fecha = document.getElementById('fecha-res-sel').value;
   const matches = resultadosData.filter(r => r.fecha === fecha);
@@ -482,7 +689,8 @@ function renderResultados() {
     const gd = m.games_d !== null ? parseInt(m.games_d) : null;
     const ga = m.games_a !== null ? parseInt(m.games_a) : null;
     const hasScore = gd !== null && ga !== null && (gd > 0 || ga > 0);
-    const dWins = hasScore && gd > ga, aWins = hasScore && ga > gd;
+    const dWins = hasScore && gd > ga;
+    const aWins = hasScore && ga > gd;
     const scoreHTML = hasScore
       ? `<div class="match-score">${gd}&ndash;${ga}</div>`
       : `<div class="match-score pending">Pendiente</div>`;
@@ -497,15 +705,15 @@ function renderResultados() {
   }).join('');
 }
 
-// ═══════════════════════════════════════════════════
+// ═══════════════════════════════════════════
 //  HELPERS
-// ═══════════════════════════════════════════════════
+// ═══════════════════════════════════════════
 function norm(n) { return (n||'').toLowerCase().trim(); }
 
 function buildPosMap(players) {
   if (!players) return {};
   const m = {};
-  players.forEach(p => { if (p.nombre) m[norm(p.nombre)] = parseInt(p.pos)||0; });
+  players.forEach(p => { if (p.nombre) m[norm(p.nombre)] = p.posNum || 0; });
   return m;
 }
 
@@ -546,7 +754,7 @@ function updateNavBtns() {
 function showCat(cat, btn) {
   currentCat = cat;
   document.querySelectorAll('.sector-btn').forEach(b => b.className = 'sector-btn');
-  btn.className = cat==='todos' ? 'sector-btn active-a' : `sector-btn active-${cat.toLowerCase()}`;
+  btn.className = cat === 'todos' ? 'sector-btn active-a' : `sector-btn active-${cat.toLowerCase()}`;
   renderRanking();
 }
 
@@ -554,7 +762,7 @@ function showTab(name, btn) {
   document.querySelectorAll('.tab').forEach(t => t.classList.remove('active'));
   document.querySelectorAll('.panel').forEach(p => p.classList.remove('active'));
   btn.classList.add('active');
-  document.getElementById('panel-'+name).classList.add('active');
+  document.getElementById('panel-' + name).classList.add('active');
 }
 
 function setSyncError() {
@@ -569,12 +777,12 @@ function setSyncOk() {
     `Actualizado ${now.toLocaleTimeString('es-AR',{hour:'2-digit',minute:'2-digit'})}`;
 }
 
-// ═══════════════════════════════════════════════════
+// ═══════════════════════════════════════════
 //  INIT
-// ═══════════════════════════════════════════════════
+// ═══════════════════════════════════════════
 async function loadAll() {
   try {
-    await Promise.all([loadRanking(), loadResultados()]);
+    await Promise.all([loadRanking(), loadResultados(), loadFotos()]);
     renderRanking();
     renderResultados();
     setSyncOk();
