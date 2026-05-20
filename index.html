@@ -524,6 +524,15 @@ async function loadResultados() {
 //  LOAD FOTOS (opcional — cuando haya CSV)
 //  Estructura pestaña FOTOS: NOMBRE | URL_FOTO
 // ═══════════════════════════════════════════
+// Convierte URL de Google Drive (view) a URL de imagen directa
+function toDriveImg(url) {
+  // Formato: https://drive.google.com/file/d/ID/view...
+  const m = url.match(/\/d\/([a-zA-Z0-9_-]{10,})/);
+  if (m) return `https://drive.google.com/thumbnail?id=${m[1]}&sz=w150`;
+  // Ya es un link directo u otro formato — devolver tal cual
+  return url;
+}
+
 async function loadFotos() {
   if (!CSV_FOTOS) return;
   try {
@@ -543,7 +552,7 @@ async function loadFotos() {
       const nombre = (row[nomCol]||'').toString().trim();
       const url    = (row[urlCol]||'').toString().trim();
       if (nombre && url && url.startsWith('http')) {
-        playerPhotos[norm(nombre)] = url;
+        playerPhotos[norm(nombre)] = toDriveImg(url);
       }
     });
     console.log('Fotos cargadas:', Object.keys(playerPhotos).length, playerPhotos);
