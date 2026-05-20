@@ -149,12 +149,12 @@
   .ranking-table td:first-child { padding-left:0; }
 
   /* ── AVATAR ── */
-  .avatar-cell { width:44px; padding-right:0 !important; }
+  .avatar-cell { width:62px; padding-right:0 !important; }
   .avatar {
-    width:36px; height:36px; border-radius:50%;
-    background:var(--gray2); border:1.5px solid var(--gray3);
+    width:54px; height:54px; border-radius:50%;
+    background:var(--gray2); border:2px solid var(--gray3);
     overflow:hidden; display:flex; align-items:center; justify-content:center;
-    flex-shrink:0; font-size:0.8rem; font-weight:700; color:var(--muted);
+    flex-shrink:0; font-size:1rem; font-weight:700; color:var(--muted);
     text-transform:uppercase;
   }
   .avatar img { width:100%; height:100%; object-fit:cover; }
@@ -328,7 +328,7 @@
         <span><b style="color:#ff5c5c">▼</b> vs anterior</span>
         <span><b style="color:var(--cat-b);font-size:0.68rem">NEW</b> nuevo</span>
         <span class="hide-xs"><b style="color:var(--accent)">△/▽</b> vs inicio</span>
-        <span><b class="rec-gf">GF</b> games a favor</span>
+        <span><b class="rec-gf">±</b> dif. games</span>
       </div>
     </div>
 
@@ -382,7 +382,7 @@
 const CSV_RANKING    = 'https://docs.google.com/spreadsheets/d/e/2PACX-1vRgJZBlL0j97a5N6k-9QzHZoAexu61_Ti73MVgIHptaLHE4YgwXFT1iW5f01XAofbI9elMnCpAT3Slj/pub?gid=1935327508&single=true&output=csv';
 const CSV_RESULTADOS = 'https://docs.google.com/spreadsheets/d/e/2PACX-1vRgJZBlL0j97a5N6k-9QzHZoAexu61_Ti73MVgIHptaLHE4YgwXFT1iW5f01XAofbI9elMnCpAT3Slj/pub?gid=0&single=true&output=csv';
 // Cuando agregues la pestaña FOTOS, poner el gid acá:
-const CSV_FOTOS      = ''; // ej: '...pub?gid=XXXXXXX&single=true&output=csv'
+const CSV_FOTOS      = 'https://docs.google.com/spreadsheets/d/e/2PACX-1vRgJZBlL0j97a5N6k-9QzHZoAexu61_Ti73MVgIHptaLHE4YgwXFT1iW5f01XAofbI9elMnCpAT3Slj/pub?gid=1137266713&single=true&output=csv';
 
 // ═══════════════════════════════════════════
 //  STATE
@@ -497,14 +497,16 @@ async function loadResultados() {
     const gan = ga !== null ? parseInt(ga) : NaN;
     if (!isNaN(gdn) && !isNaN(gan) && (gdn > 0 || gan > 0)) {
       if (des) {
-        if (!playerStats[des]) playerStats[des] = {wins:0, losses:0, gf:0};
+        if (!playerStats[des]) playerStats[des] = {wins:0, losses:0, gf:0, gc:0};
         gdn > gan ? playerStats[des].wins++ : playerStats[des].losses++;
         playerStats[des].gf += gdn;
+        playerStats[des].gc += gan;
       }
       if (ace) {
-        if (!playerStats[ace]) playerStats[ace] = {wins:0, losses:0, gf:0};
+        if (!playerStats[ace]) playerStats[ace] = {wins:0, losses:0, gf:0, gc:0};
         gan > gdn ? playerStats[ace].wins++ : playerStats[ace].losses++;
         playerStats[ace].gf += gan;
+        playerStats[ace].gc += gdn;
       }
     }
   });
@@ -527,12 +529,24 @@ async function loadFotos() {
   try {
     const rows = await fetchCSV(CSV_FOTOS);
     playerPhotos = {};
+    // Detectar columnas por header o asumir col 0 = nombre, col 1 = url
+    let nomCol = 0, urlCol = 1;
+    if (rows.length > 0) {
+      rows[0].forEach((h, i) => {
+        const hu = (h||'').toString().toUpperCase().trim();
+        if (hu.includes('NOM') || hu.includes('JUGAD')) nomCol = i;
+        if (hu.includes('URL') || hu.includes('FOTO') || hu.includes('IMG') || hu.includes('LINK')) urlCol = i;
+      });
+    }
     rows.forEach((row, i) => {
-      if (i === 0) return;
-      const nombre = (row[0]||'').toString().trim();
-      const url    = (row[1]||'').toString().trim();
-      if (nombre && url) playerPhotos[norm(nombre)] = url;
+      if (i === 0) return; // saltar header
+      const nombre = (row[nomCol]||'').toString().trim();
+      const url    = (row[urlCol]||'').toString().trim();
+      if (nombre && url && url.startsWith('http')) {
+        playerPhotos[norm(nombre)] = url;
+      }
     });
+    console.log('Fotos cargadas:', Object.keys(playerPhotos).length, playerPhotos);
   } catch(e) {
     console.warn('No se pudieron cargar las fotos:', e.message);
   }
@@ -633,11 +647,15 @@ function renderRanking() {
       }
     }
 
-    // Stats: G / P / GF
+    // Stats: G / P / DIF
     const stats = getStats(p.nombre);
-    const recHTML = stats
-      ? `<span class="rec-w">${stats.wins}G</span><span class="rec-sep">/</span><span class="rec-l">${stats.losses}P</span><span class="rec-sep"> · </span><span class="rec-gf">${stats.gf}GF</span>`
-      : '<span class="var-same">—</span>';
+    let recHTML = '<span class="var-same">—</span>';
+    if (stats) {
+      const dif = stats.gf - stats.gc;
+      const difClass = dif > 0 ? 'rec-w' : dif < 0 ? 'rec-l' : 'var-same';
+      const difStr = dif > 0 ? `+${dif}` : String(dif);
+      recHTML = `<span class="rec-w">${stats.wins}G</span><span class="rec-sep">/</span><span class="rec-l">${stats.losses}P</span><span class="rec-sep"> · </span><span class="${difClass}">${difStr}</span>`;
+    }
 
     const tdPrev   = hasMulti ? `<td class="var-cell">${varPrevHTML}</td>` : '';
     const tdInicio = (hasMulti && curIdx > 0) ? `<td class="var-cell hide-xs">${varInicioHTML}</td>` : '';
@@ -668,7 +686,7 @@ function renderRanking() {
         <th>Cat.</th>
         ${thPrev}
         ${thInicio}
-        <th>G / P / GF</th>
+        <th>G / P / Dif</th>
       </tr></thead>
       <tbody>${tRows}</tbody>
     </table>`;
