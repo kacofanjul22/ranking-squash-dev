@@ -7,17 +7,28 @@
 <link href="https://fonts.googleapis.com/css2?family=Inter:wght@400;500;600;700&family=Playfair+Display:wght@700;900&display=swap" rel="stylesheet">
 <style>
   :root {
-    --black:    #0a0a0a;
-    --white:    #f0ede8;
-    --accent:   #c8ff00;
-    --gray:     #161616;
-    --gray2:    #242424;
-    --gray3:    #3a3a3a;
+    /* Paleta ATS — naranja + negro */
+    --orange:   #E8521A;
+    --orange2:  #c94410;
+    --orange-soft: rgba(232,82,26,0.12);
+    --black:    #111111;
+    --gray:     #1a1a1a;
+    --gray2:    #252525;
+    --gray3:    #383838;
+    --gray4:    #555;
+    --white:    #f2ede8;
+    --white2:   #d6cfc8;
     --muted:    #777;
-    --cat-a:    #c8ff00;
-    --cat-b:    #00d4ff;
-    --cat-c:    #ff6b35;
-    --cat-d:    #c471ed;
+
+    /* Top-8 highlight */
+    --top8-bg:  rgba(232,82,26,0.07);
+    --top8-border: rgba(232,82,26,0.25);
+
+    /* Categorías */
+    --cat-a: #E8521A;   /* naranja — A es la élite */
+    --cat-b: #f5a623;   /* ámbar */
+    --cat-c: #4fc3f7;   /* celeste */
+    --cat-d: #81c784;   /* verde */
   }
   * { box-sizing:border-box; margin:0; padding:0; }
   body {
@@ -26,71 +37,57 @@
     -webkit-font-smoothing:antialiased;
   }
 
-  /* ── HEADER ── */
+  /* ═══ HEADER ═══ */
   header {
     background:var(--gray);
-    border-bottom:1px solid #2a2a2a;
+    border-bottom:2px solid var(--orange);
     padding:0 2rem;
     display:flex; align-items:center; justify-content:space-between;
     gap:1rem; position:sticky; top:0; z-index:100;
-    box-shadow:0 2px 20px rgba(0,0,0,.5);
+    box-shadow:0 4px 24px rgba(0,0,0,.6);
   }
-  .logo-area { display:flex; align-items:center; gap:12px; padding:14px 0; }
-
-  /* Logo ATS — reemplazá el src cuando tengas el archivo */
-  .logo-img {
-    width:44px; height:44px;
-    object-fit:contain; flex-shrink:0;
-    /* SVG placeholder inline si no hay imagen */
-    display:flex; align-items:center; justify-content:center;
-  }
-  .logo-svg-placeholder {
-    width:44px; height:44px; flex-shrink:0;
-  }
-
-  .logo-text { line-height:1; }
+  .logo-area { display:flex; align-items:center; gap:12px; padding:10px 0; }
+  .logo-svg  { width:46px; height:54px; flex-shrink:0; }
+  .logo-text { line-height:1.1; }
   .logo-text h1 {
     font-family:'Playfair Display',serif;
-    font-size:1.25rem; font-weight:900;
-    color:var(--white); letter-spacing:0.5px;
+    font-size:1.2rem; font-weight:900; color:var(--white); letter-spacing:0.3px;
   }
-  .logo-text h1 span { color:var(--accent); }
+  .logo-text h1 span { color:var(--orange); }
   .logo-text p {
-    font-size:0.65rem; color:var(--muted);
-    letter-spacing:3px; text-transform:uppercase;
-    margin-top:2px;
+    font-size:0.62rem; color:var(--muted);
+    letter-spacing:3px; text-transform:uppercase; margin-top:2px;
   }
-
-  .sync-status { font-size:0.72rem; color:var(--muted); display:flex; align-items:center; gap:6px; white-space:nowrap; }
+  .sync-status { font-size:0.7rem; color:var(--muted); display:flex; align-items:center; gap:6px; white-space:nowrap; }
   .dot { width:7px; height:7px; border-radius:50%; background:var(--muted); flex-shrink:0; }
-  .dot.live { background:var(--accent); animation:pulse 2s infinite; }
-  @keyframes pulse { 0%,100%{opacity:1} 50%{opacity:0.3} }
+  .dot.live { background:var(--orange); animation:pulse 2s infinite; }
+  @keyframes pulse { 0%,100%{opacity:1} 50%{opacity:0.35} }
 
-  /* ── NAV ── */
+  /* ═══ NAV ═══ */
   nav {
-    background:var(--gray); border-bottom:1px solid #222;
+    background:var(--gray); border-bottom:1px solid #2a2a2a;
     display:flex; padding:0 2rem;
     overflow-x:auto; scrollbar-width:none;
   }
   nav::-webkit-scrollbar { display:none; }
   .tab {
-    padding:0.9rem 1.5rem; font-size:0.8rem; font-weight:600;
+    padding:0.9rem 1.5rem; font-size:0.78rem; font-weight:600;
     letter-spacing:1.5px; text-transform:uppercase;
     cursor:pointer; color:var(--muted);
-    border-bottom:2px solid transparent;
-    transition:all 0.2s; white-space:nowrap;
-    background:none; border-top:none; border-left:none; border-right:none;
+    border-bottom:2px solid transparent; transition:all 0.2s;
+    white-space:nowrap; background:none;
+    border-top:none; border-left:none; border-right:none;
     font-family:'Inter',sans-serif;
   }
   .tab:hover { color:var(--white); }
-  .tab.active { color:var(--accent); border-bottom-color:var(--accent); }
+  .tab.active { color:var(--orange); border-bottom-color:var(--orange); }
 
-  /* ── LAYOUT ── */
+  /* ═══ LAYOUT ═══ */
   main { max-width:1000px; margin:0 auto; padding:2rem 1.5rem; }
   .panel { display:none; }
   .panel.active { display:block; }
 
-  /* ── CATEGORY PILLS ── */
+  /* ═══ CATEGORY PILLS ═══ */
   .sector-tabs { display:flex; gap:8px; margin-bottom:1.4rem; flex-wrap:wrap; }
   .sector-btn {
     padding:5px 16px; border-radius:20px;
@@ -100,12 +97,13 @@
     transition:all 0.2s; font-family:'Inter',sans-serif;
   }
   .sector-btn:hover { color:var(--white); border-color:var(--gray3); }
-  .sector-btn.active-a { background:#1a2200; color:var(--cat-a); border-color:var(--cat-a); }
-  .sector-btn.active-b { background:#001e26; color:var(--cat-b); border-color:var(--cat-b); }
-  .sector-btn.active-c { background:#260d00; color:var(--cat-c); border-color:var(--cat-c); }
-  .sector-btn.active-d { background:#1a0026; color:var(--cat-d); border-color:var(--cat-d); }
+  .sector-btn.active-todos { background:var(--orange-soft); color:var(--orange); border-color:var(--orange); }
+  .sector-btn.active-a { background:rgba(232,82,26,.15); color:var(--cat-a); border-color:var(--cat-a); }
+  .sector-btn.active-b { background:rgba(245,166,35,.12); color:var(--cat-b); border-color:var(--cat-b); }
+  .sector-btn.active-c { background:rgba(79,195,247,.1); color:var(--cat-c); border-color:var(--cat-c); }
+  .sector-btn.active-d { background:rgba(129,199,132,.1); color:var(--cat-d); border-color:var(--cat-d); }
 
-  /* ── DATE BAR ── */
+  /* ═══ DATE BAR ═══ */
   .date-bar {
     display:flex; align-items:center; justify-content:space-between;
     gap:1rem; margin-bottom:1.4rem; flex-wrap:wrap;
@@ -118,92 +116,102 @@
     width:30px; height:30px; display:flex; align-items:center; justify-content:center;
     cursor:pointer; font-size:1rem; transition:all 0.15s; font-family:'Inter',sans-serif;
   }
-  .date-nav-btn:hover:not(:disabled) { border-color:var(--accent); color:var(--accent); }
+  .date-nav-btn:hover:not(:disabled) { border-color:var(--orange); color:var(--orange); }
   .date-nav-btn:disabled { opacity:0.2; cursor:default; }
   .fecha-select {
     background:var(--gray2); color:var(--white);
     border:1px solid var(--gray3); border-radius:8px;
     padding:6px 12px; font-size:0.85rem;
-    font-family:'Inter',sans-serif; cursor:pointer; outline:none;
-    transition:border-color 0.2s;
+    font-family:'Inter',sans-serif; cursor:pointer; outline:none; transition:border-color 0.2s;
   }
-  .fecha-select:hover { border-color:var(--accent); }
+  .fecha-select:hover { border-color:var(--orange); }
 
-  /* ── LEGEND ── */
+  /* ═══ LEGEND ═══ */
   .legend { display:flex; gap:1rem; flex-wrap:wrap; font-size:0.7rem; color:var(--muted); align-items:center; }
   .legend span { display:flex; align-items:center; gap:3px; }
 
-  /* ── RANKING TABLE ── */
+  /* ═══ RANKING TABLE ═══ */
   .ranking-table-wrap { overflow-x:auto; }
   .ranking-table { width:100%; border-collapse:collapse; }
-  .ranking-table thead tr { border-bottom:1px solid #2a2a2a; }
+  .ranking-table thead tr { border-bottom:1px solid #2e2e2e; }
   .ranking-table th {
     text-align:left; font-size:0.65rem; font-weight:700;
     letter-spacing:2px; text-transform:uppercase;
-    color:var(--muted); padding:0 0.7rem 0.8rem;
+    color:var(--muted); padding:0 0.7rem 0.85rem;
   }
   .ranking-table th:first-child { padding-left:0; }
-  .ranking-table tbody tr { border-bottom:1px solid #181818; transition:background 0.15s; }
+  .ranking-table tbody tr { border-bottom:1px solid #1e1e1e; transition:background 0.15s; }
   .ranking-table tbody tr:hover { background:var(--gray2); }
-  .ranking-table td { padding:0.7rem 0.7rem; font-size:0.9rem; vertical-align:middle; }
+  .ranking-table td { padding:0.65rem 0.7rem; font-size:0.9rem; vertical-align:middle; }
   .ranking-table td:first-child { padding-left:0; }
 
-  /* ── AVATAR ── */
-  .avatar-cell { width:62px; padding-right:0 !important; }
+  /* TOP 8 highlight */
+  .ranking-table tbody tr.top8 {
+    background: var(--top8-bg);
+    border-left: 2px solid var(--top8-border);
+  }
+  .ranking-table tbody tr.top8:hover { background: rgba(232,82,26,0.13); }
+  .ranking-table tbody tr.top1 {
+    background: rgba(232,82,26,0.14);
+    border-left: 2px solid var(--orange);
+  }
+  .ranking-table tbody tr.top1:hover { background: rgba(232,82,26,0.2); }
+
+  /* ═══ AVATAR ═══ */
+  .avatar-cell { width:64px; padding-right:0 !important; }
   .avatar {
     width:54px; height:54px; border-radius:50%;
     background:var(--gray2); border:2px solid var(--gray3);
     overflow:hidden; display:flex; align-items:center; justify-content:center;
     flex-shrink:0; font-size:1rem; font-weight:700; color:var(--muted);
-    text-transform:uppercase;
+    text-transform:uppercase; transition:border-color 0.2s;
   }
   .avatar img { width:100%; height:100%; object-fit:cover; }
-  .avatar.cat-a { border-color:var(--cat-a); }
-  .avatar.cat-b { border-color:var(--cat-b); }
-  .avatar.cat-c { border-color:var(--cat-c); }
-  .avatar.cat-d { border-color:var(--cat-d); }
+  .avatar.top8-av { border-color:var(--orange); }
+  .avatar.cat-a   { border-color:var(--cat-a); }
+  .avatar.cat-b   { border-color:var(--cat-b); }
+  .avatar.cat-c   { border-color:var(--cat-c); }
+  .avatar.cat-d   { border-color:var(--cat-d); }
 
-  /* ── POSITION ── */
+  /* ═══ POSITION ═══ */
   .pos-cell {
     font-family:'Playfair Display',serif;
-    font-size:1.35rem; font-weight:700; color:var(--gray3);
-    width:40px; text-align:right; padding-right:0.6rem !important;
-    line-height:1;
+    font-size:1.35rem; font-weight:700; color:var(--gray4);
+    width:42px; text-align:right; padding-right:0.6rem !important; line-height:1;
   }
-  .pos-top { color:var(--accent); }
+  .pos-top1 { color:var(--orange); }
+  .pos-top8 { color:var(--white2); }
 
-  /* ── PLAYER NAME ── */
+  /* ═══ PLAYER NAME ═══ */
   .player-name { font-weight:500; font-size:0.9rem; }
-  .player-cat-pos {
-    font-size:0.7rem; color:var(--muted); margin-top:1px;
-    /* posición dentro de la categoría, se muestra solo en vista Todos */
-  }
+  .player-cat-pos { font-size:0.68rem; color:var(--muted); margin-top:2px; }
 
-  /* ── CATEGORY BADGE ── */
+  /* ═══ CATEGORY BADGE ═══ */
   .sector-badge {
     display:inline-block; padding:2px 9px;
     border-radius:10px; font-size:0.68rem; font-weight:600; letter-spacing:1px;
   }
-  .badge-a { background:#1a2200; color:var(--cat-a); }
-  .badge-b { background:#001e26; color:var(--cat-b); }
-  .badge-c { background:#260d00; color:var(--cat-c); }
-  .badge-d { background:#1a0026; color:var(--cat-d); }
+  .badge-a { background:rgba(232,82,26,.18); color:var(--cat-a); }
+  .badge-b { background:rgba(245,166,35,.15); color:var(--cat-b); }
+  .badge-c { background:rgba(79,195,247,.12); color:var(--cat-c); }
+  .badge-d { background:rgba(129,199,132,.12); color:var(--cat-d); }
 
-  /* ── VARIACIÓN ── */
+  /* ═══ VARIACIÓN ═══ */
   .var-cell { font-size:0.8rem; font-weight:600; white-space:nowrap; min-width:58px; }
   .var-up   { color:#4dff91; }
   .var-down { color:#ff5c5c; }
   .var-same { color:var(--muted); }
-  .var-new  { color:var(--cat-b); font-size:0.68rem; letter-spacing:1px; font-weight:700; }
+  .var-new  { color:var(--cat-c); font-size:0.68rem; letter-spacing:1px; font-weight:700; }
 
-  /* ── STATS ── */
+  /* ═══ STATS ═══ */
   .stats-cell { font-size:0.8rem; white-space:nowrap; }
-  .rec-w  { color:#4dff91; font-weight:700; }
-  .rec-l  { color:#ff5c5c; font-weight:700; }
-  .rec-gf { color:var(--accent); font-weight:600; }
+  .rec-w   { color:#4dff91; font-weight:700; }
+  .rec-l   { color:#ff5c5c; font-weight:700; }
+  .rec-dif-pos { color:var(--orange); font-weight:700; }
+  .rec-dif-neg { color:#ff5c5c; font-weight:600; }
   .rec-sep { color:var(--muted); margin:0 2px; }
 
-  /* ── RESULTADOS ── */
+  /* ═══ RESULTADOS ═══ */
   .res-controls { display:flex; align-items:center; gap:1rem; margin-bottom:1.5rem; flex-wrap:wrap; }
   .res-controls label { font-size:0.75rem; font-weight:600; letter-spacing:2px; text-transform:uppercase; color:var(--muted); }
   .match-grid { display:grid; gap:8px; }
@@ -211,35 +219,35 @@
     background:var(--gray); border-radius:10px;
     padding:0.85rem 1.2rem;
     display:flex; align-items:center; gap:1rem;
-    border:1px solid #222;
+    border:1px solid #252525; transition:border-color 0.15s;
   }
+  .match-card:hover { border-color:var(--gray3); }
   .match-players { flex:1; display:flex; align-items:center; gap:0.5rem; flex-wrap:wrap; }
   .player-pill { font-size:0.88rem; font-weight:500; }
   .vs-sep { font-size:0.68rem; color:var(--muted); font-weight:700; letter-spacing:1px; }
   .match-score {
     font-family:'Playfair Display',serif;
-    font-size:1.4rem; font-weight:700; color:var(--accent);
+    font-size:1.4rem; font-weight:700; color:var(--orange);
     letter-spacing:2px; white-space:nowrap; min-width:50px; text-align:right;
   }
   .match-score.pending {
     font-size:0.72rem; font-family:'Inter',sans-serif;
     color:var(--muted); font-weight:500; letter-spacing:1px; text-transform:uppercase;
   }
-  .winner-mark { color:var(--accent); font-size:0.72rem; margin-left:4px; }
+  .winner-mark { color:var(--orange); font-size:0.72rem; margin-left:4px; }
   .loser { color:var(--muted); }
 
-  /* ── REGLAMENTO ── */
+  /* ═══ REGLAMENTO ═══ */
   .rules-card {
     background:var(--gray); border-radius:12px;
-    padding:2rem; border:1px solid #222; line-height:1.85;
+    padding:2rem; border:1px solid #2a2a2a; line-height:1.85;
   }
   .rules-card h2 {
     font-family:'Playfair Display',serif;
-    font-size:2rem; font-weight:900; color:var(--white);
-    margin-bottom:0.3rem;
+    font-size:2rem; font-weight:900; color:var(--white); margin-bottom:0.3rem;
   }
-  .rules-card h2 span { color:var(--accent); }
-  .rules-card .subtitle { font-size:0.75rem; color:var(--muted); letter-spacing:2px; text-transform:uppercase; margin-bottom:1.8rem; }
+  .rules-card h2 span { color:var(--orange); }
+  .rules-card .subtitle { font-size:0.72rem; color:var(--muted); letter-spacing:2px; text-transform:uppercase; margin-bottom:1.8rem; }
   .rules-card ol { padding-left:1.2rem; }
   .rules-card li { font-size:0.9rem; color:#bbb; margin-bottom:1rem; padding-left:0.4rem; }
   .rules-card li strong { color:var(--white); }
@@ -250,13 +258,11 @@
   .error-msg { color:#ff6b6b; }
 
   @media (max-width:640px) {
-    header { padding:0 1rem; }
-    nav    { padding:0 1rem; }
-    main   { padding:1.5rem 1rem; }
+    header { padding:0 1rem; } nav { padding:0 1rem; } main { padding:1.5rem 1rem; }
     .match-card { flex-direction:column; align-items:flex-start; gap:0.4rem; }
     .match-score { text-align:left; }
     .hide-xs { display:none !important; }
-    .logo-text h1 { font-size:1.1rem; }
+    .logo-text h1 { font-size:1rem; }
   }
 </style>
 </head>
@@ -264,29 +270,30 @@
 
 <header>
   <div class="logo-area">
-    <!--
-      Para agregar el logo real:
-      1. Subí el archivo a tu repo (ej: assets/logo-ats.png)
-      2. Reemplazá el SVG de abajo por: <img class="logo-img" src="assets/logo-ats.png" alt="ATS">
-    -->
-    <svg class="logo-svg-placeholder" viewBox="0 0 44 44" fill="none" xmlns="http://www.w3.org/2000/svg">
-      <circle cx="22" cy="22" r="21" fill="#1a1a1a" stroke="#c8ff00" stroke-width="1.5"/>
-      <circle cx="22" cy="22" r="14" fill="none" stroke="#c8ff00" stroke-width="1" stroke-dasharray="3 2"/>
-      <!-- Raqueta -->
-      <ellipse cx="22" cy="17" rx="7" ry="9" fill="none" stroke="#c8ff00" stroke-width="1.5"/>
-      <line x1="22" y1="26" x2="22" y2="35" stroke="#c8ff00" stroke-width="2" stroke-linecap="round"/>
-      <line x1="19" y1="32" x2="25" y2="32" stroke="#c8ff00" stroke-width="1.5" stroke-linecap="round"/>
-      <!-- Cuerdas -->
-      <line x1="22" y1="8" x2="22" y2="26" stroke="#c8ff00" stroke-width="0.8" stroke-opacity="0.5"/>
-      <line x1="15" y1="14" x2="29" y2="14" stroke="#c8ff00" stroke-width="0.8" stroke-opacity="0.5"/>
-      <line x1="15" y1="18" x2="29" y2="18" stroke="#c8ff00" stroke-width="0.8" stroke-opacity="0.5"/>
-      <line x1="15" y1="22" x2="29" y2="22" stroke="#c8ff00" stroke-width="0.8" stroke-opacity="0.5"/>
-      <line x1="17" y1="10" x2="17" y2="26" stroke="#c8ff00" stroke-width="0.8" stroke-opacity="0.5"/>
-      <line x1="27" y1="10" x2="27" y2="26" stroke="#c8ff00" stroke-width="0.8" stroke-opacity="0.5"/>
+    <!-- Logo ATS vectorizado -->
+    <svg class="logo-svg" viewBox="0 0 90 106" fill="none" xmlns="http://www.w3.org/2000/svg">
+      <!-- Escudo -->
+      <path d="M4 4 H86 V68 Q86 100 45 102 Q4 100 4 68 Z" fill="#1a1a1a" stroke="#E8521A" stroke-width="3.5"/>
+      <!-- Barra naranja horizontal -->
+      <rect x="4" y="40" width="82" height="16" fill="#E8521A"/>
+      <!-- Barra naranja vertical -->
+      <rect x="39" y="4" width="12" height="96" fill="#E8521A"/>
+      <!-- Letra A -->
+      <text x="14" y="82" font-family="Arial Black,sans-serif" font-weight="900" font-size="28" fill="#f2ede8">A</text>
+      <!-- Letra S -->
+      <text x="56" y="82" font-family="Arial Black,sans-serif" font-weight="900" font-size="28" fill="#f2ede8">S</text>
+      <!-- Jugador estilizado -->
+      <circle cx="54" cy="14" r="4" fill="#f2ede8"/>
+      <line x1="54" y1="18" x2="50" y2="30" stroke="#f2ede8" stroke-width="2.5" stroke-linecap="round"/>
+      <line x1="50" y1="30" x2="43" y2="38" stroke="#f2ede8" stroke-width="2" stroke-linecap="round"/>
+      <line x1="50" y1="30" x2="58" y2="38" stroke="#f2ede8" stroke-width="2" stroke-linecap="round"/>
+      <line x1="54" y1="18" x2="64" y2="22" stroke="#f2ede8" stroke-width="2" stroke-linecap="round"/>
+      <!-- Pelotita -->
+      <circle cx="30" cy="18" r="3" fill="#f2ede8"/>
     </svg>
     <div class="logo-text">
       <h1>Ranking <span>2026</span></h1>
-      <p>Squash · Tucumán</p>
+      <p>Asociación Tucumana de Squash</p>
     </div>
   </div>
   <div class="sync-status">
@@ -305,9 +312,8 @@
 
   <!-- ══ RANKING ══ -->
   <div class="panel active" id="panel-ranking">
-
     <div class="sector-tabs">
-      <button class="sector-btn active-a" onclick="showCat('todos',this)">Todos</button>
+      <button class="sector-btn active-todos" onclick="showCat('todos',this)">Todos</button>
       <button class="sector-btn" onclick="showCat('A',this)">Categoría A</button>
       <button class="sector-btn" onclick="showCat('B',this)">Categoría B</button>
       <button class="sector-btn" onclick="showCat('C',this)">Categoría C</button>
@@ -324,11 +330,11 @@
         <button class="date-nav-btn" id="btn-next" onclick="navFecha(1)">&#8250;</button>
       </div>
       <div class="legend">
-        <span><b style="color:#4dff91">▲</b> vs anterior</span>
-        <span><b style="color:#ff5c5c">▼</b> vs anterior</span>
-        <span><b style="color:var(--cat-b);font-size:0.68rem">NEW</b> nuevo</span>
-        <span class="hide-xs"><b style="color:var(--accent)">△/▽</b> vs inicio</span>
-        <span><b class="rec-gf">±</b> dif. games</span>
+        <span><span style="display:inline-block;width:8px;height:8px;border-radius:2px;background:var(--top8-bg);border:1px solid var(--top8-border)"></span>&nbsp;Top 8 Master</span>
+        <span><b style="color:#4dff91">▲</b>&nbsp;vs anterior</span>
+        <span><b style="color:#ff5c5c">▼</b>&nbsp;vs anterior</span>
+        <span class="hide-xs"><b style="color:var(--orange)">△/▽</b>&nbsp;vs inicio</span>
+        <span><b style="color:var(--orange)">±</b>&nbsp;dif. games</span>
       </div>
     </div>
 
@@ -381,8 +387,9 @@
 // ═══════════════════════════════════════════
 const CSV_RANKING    = 'https://docs.google.com/spreadsheets/d/e/2PACX-1vRgJZBlL0j97a5N6k-9QzHZoAexu61_Ti73MVgIHptaLHE4YgwXFT1iW5f01XAofbI9elMnCpAT3Slj/pub?gid=1935327508&single=true&output=csv';
 const CSV_RESULTADOS = 'https://docs.google.com/spreadsheets/d/e/2PACX-1vRgJZBlL0j97a5N6k-9QzHZoAexu61_Ti73MVgIHptaLHE4YgwXFT1iW5f01XAofbI9elMnCpAT3Slj/pub?gid=0&single=true&output=csv';
-// Cuando agregues la pestaña FOTOS, poner el gid acá:
 const CSV_FOTOS      = 'https://docs.google.com/spreadsheets/d/e/2PACX-1vRgJZBlL0j97a5N6k-9QzHZoAexu61_Ti73MVgIHptaLHE4YgwXFT1iW5f01XAofbI9elMnCpAT3Slj/pub?gid=1137266713&single=true&output=csv';
+
+const TOP8 = 8; // cuántos se resaltan por categoría
 
 // ═══════════════════════════════════════════
 //  STATE
@@ -391,7 +398,7 @@ let rankingByFecha = {};
 let fechaKeys      = [];
 let currentFecha   = null;
 let resultadosData = [];
-let playerStats    = {};   // { nombre: {wins,losses,gf} }  gf = games a favor
+let playerStats    = {};   // { nombre: {wins,losses,gf,gc} }
 let playerPhotos   = {};   // { nombre_norm: url }
 let currentCat     = 'todos';
 
@@ -418,9 +425,6 @@ async function fetchCSV(url) {
 
 // ═══════════════════════════════════════════
 //  LOAD RANKING
-//  Fila 0: "FECHA 1","","","FECHA 2","","", ...
-//  Fila 1: "Posición","Nombre","Categoría",  "Posición","Nombre","Categoría", ...
-//  Fila 2+: datos
 // ═══════════════════════════════════════════
 async function loadRanking() {
   const rows = await fetchCSV(CSV_RANKING);
@@ -444,9 +448,9 @@ async function loadRanking() {
     let posOff = 0, nomOff = 1, catOff = 2;
     for (let c = col; c < groupEnd; c++) {
       const h = (header2[c] || '').toString().toUpperCase().trim();
-      if      (h.includes('POS') || h === '#')             posOff = c - col;
-      else if (h.includes('NOM') || h.includes('JUGAD'))   nomOff = c - col;
-      else if (h.includes('CAT') || h.includes('GRUP'))    catOff = c - col;
+      if      (h.includes('POS') || h === '#')           posOff = c - col;
+      else if (h.includes('NOM') || h.includes('JUGAD')) nomOff = c - col;
+      else if (h.includes('CAT') || h.includes('GRUP'))  catOff = c - col;
     }
 
     const players = [];
@@ -470,7 +474,7 @@ async function loadRanking() {
     col = groupEnd;
   }
 
-  if (!fechaKeys.length) throw new Error('No se encontraron fechas en el ranking');
+  if (!fechaKeys.length) throw new Error('No se encontraron fechas');
   currentFecha = fechaKeys[fechaKeys.length - 1];
   populateFechaSelect();
 }
@@ -521,15 +525,11 @@ async function loadResultados() {
 }
 
 // ═══════════════════════════════════════════
-//  LOAD FOTOS (opcional — cuando haya CSV)
-//  Estructura pestaña FOTOS: NOMBRE | URL_FOTO
+//  LOAD FOTOS
 // ═══════════════════════════════════════════
-// Convierte URL de Google Drive (view) a URL de imagen directa
 function toDriveImg(url) {
-  // Formato: https://drive.google.com/file/d/ID/view...
   const m = url.match(/\/d\/([a-zA-Z0-9_-]{10,})/);
   if (m) return `https://drive.google.com/thumbnail?id=${m[1]}&sz=w150`;
-  // Ya es un link directo u otro formato — devolver tal cual
   return url;
 }
 
@@ -538,7 +538,6 @@ async function loadFotos() {
   try {
     const rows = await fetchCSV(CSV_FOTOS);
     playerPhotos = {};
-    // Detectar columnas por header o asumir col 0 = nombre, col 1 = url
     let nomCol = 0, urlCol = 1;
     if (rows.length > 0) {
       rows[0].forEach((h, i) => {
@@ -548,7 +547,7 @@ async function loadFotos() {
       });
     }
     rows.forEach((row, i) => {
-      if (i === 0) return; // saltar header
+      if (i === 0) return;
       const nombre = (row[nomCol]||'').toString().trim();
       const url    = (row[urlCol]||'').toString().trim();
       if (nombre && url && url.startsWith('http')) {
@@ -557,7 +556,7 @@ async function loadFotos() {
     });
     console.log('Fotos cargadas:', Object.keys(playerPhotos).length, playerPhotos);
   } catch(e) {
-    console.warn('No se pudieron cargar las fotos:', e.message);
+    console.warn('Fotos no disponibles:', e.message);
   }
 }
 
@@ -571,13 +570,22 @@ function renderRanking() {
 
   const curIdx   = fechaKeys.indexOf(currentFecha);
   const prevKey  = curIdx > 0 ? fechaKeys[curIdx - 1] : null;
-  const firstKey = fechaKeys[0];
   const isFirst  = curIdx === 0;
   const hasMulti = fechaKeys.length > 1;
   const showAllCats = currentCat === 'todos';
 
-  const prevMap  = buildPosMap(prevKey  ? rankingByFecha[prevKey]  : null);
-  const firstMap = buildPosMap(rankingByFecha[firstKey]);
+  const prevMap  = buildPosMap(prevKey ? rankingByFecha[prevKey] : null);
+  const firstMap = buildPosMap(rankingByFecha[fechaKeys[0]]);
+
+  // Calcular posición dentro de categoría (ordenado por posición general)
+  const catPosMap = {}; // norm(nombre) → pos dentro de su cat
+  const catCounters = {A:0, B:0, C:0, D:0};
+  [...players].sort((a,b) => (a.posNum||99) - (b.posNum||99)).forEach(p => {
+    if (p.categoria && catCounters[p.categoria] !== undefined) {
+      catCounters[p.categoria]++;
+      catPosMap[norm(p.nombre)] = catCounters[p.categoria];
+    }
+  });
 
   // Filtrar
   const filtered = showAllCats ? players : players.filter(p => p.categoria === currentCat);
@@ -586,35 +594,25 @@ function renderRanking() {
     return;
   }
 
-  // Calcular posición dentro de la categoría (renumerada 1,2,3...)
-  // Para vista "todos" mostramos la posición general pero también la de categoría
-  // Para vista de una categoría, la posición mostrada es la de esa categoría
-  const catPosMap = {};  // nombre → posición dentro de su categoría
-  if (showAllCats) {
-    const catCounters = {A:0, B:0, C:0, D:0};
-    // Ordenar por posición general para asignar posición de categoría en orden
-    const sorted = [...players].sort((a,b) => (a.posNum||99) - (b.posNum||99));
-    for (const p of sorted) {
-      if (p.categoria && catCounters[p.categoria] !== undefined) {
-        catCounters[p.categoria]++;
-        catPosMap[norm(p.nombre)] = catCounters[p.categoria];
-      }
-    }
-  }
-
   const tRows = filtered.map((p, idx) => {
-    // Posición a mostrar: si estamos en vista de categoría, es idx+1
+    // Posición a mostrar
     const displayPos = showAllCats ? (p.pos || '—') : String(idx + 1);
-    const posNumDisplay = showAllCats ? p.posNum : (idx + 1);
-    const posClass = posNumDisplay <= 3 ? 'pos-top' : '';
+    const catPos = catPosMap[norm(p.nombre)] || (idx + 1);
+
+    // La posición que determina si es top8 es siempre la de la categoría
+    const isTop1 = catPos === 1;
+    const isTop8 = catPos <= TOP8;
+    const rowClass = isTop1 ? 'top1' : isTop8 ? 'top8' : '';
+
+    // Clases de posición
+    const posClass = isTop1 ? 'pos-top1' : isTop8 ? 'pos-top8' : '';
 
     // Badge categoría (solo en vista Todos)
     const badgeHTML = (p.categoria && showAllCats)
       ? `<span class="sector-badge badge-${p.categoria.toLowerCase()}">${p.categoria}</span>`
       : '';
 
-    // Sub-texto: pos en categoría (solo en vista Todos)
-    const catPos = catPosMap[norm(p.nombre)];
+    // Sub-texto pos en categoría (solo en vista Todos)
     const catPosText = (showAllCats && p.categoria && catPos)
       ? `<div class="player-cat-pos">#${catPos} en Cat. ${p.categoria}</div>`
       : '';
@@ -623,10 +621,11 @@ function renderRanking() {
     const photoUrl = playerPhotos[norm(p.nombre)];
     const initials = p.nombre.trim().split(' ').map(w=>w[0]).slice(0,2).join('').toUpperCase();
     const catClass = p.categoria ? `cat-${p.categoria.toLowerCase()}` : '';
+    const avatarTopClass = isTop8 && !p.categoria ? 'top8-av' : catClass;
     const avatarInner = photoUrl
-      ? `<img src="${photoUrl}" alt="${p.nombre}" onerror="this.parentElement.textContent='${initials}'">`
+      ? `<img src="${photoUrl}" alt="${p.nombre}" onerror="this.style.display='none';this.parentElement.dataset.fb='${initials}';this.parentElement.textContent='${initials}'">`
       : initials;
-    const avatarHTML = `<div class="avatar ${catClass}">${avatarInner}</div>`;
+    const avatarHTML = `<div class="avatar ${avatarTopClass}">${avatarInner}</div>`;
 
     // Variación vs anterior
     let varPrevHTML = '<span class="var-same">—</span>';
@@ -656,12 +655,12 @@ function renderRanking() {
       }
     }
 
-    // Stats: G / P / DIF
+    // Stats G / P / Dif
     const stats = getStats(p.nombre);
     let recHTML = '<span class="var-same">—</span>';
     if (stats) {
       const dif = stats.gf - stats.gc;
-      const difClass = dif > 0 ? 'rec-w' : dif < 0 ? 'rec-l' : 'var-same';
+      const difClass = dif > 0 ? 'rec-dif-pos' : dif < 0 ? 'rec-dif-neg' : 'var-same';
       const difStr = dif > 0 ? `+${dif}` : String(dif);
       recHTML = `<span class="rec-w">${stats.wins}G</span><span class="rec-sep">/</span><span class="rec-l">${stats.losses}P</span><span class="rec-sep"> · </span><span class="${difClass}">${difStr}</span>`;
     }
@@ -669,7 +668,7 @@ function renderRanking() {
     const tdPrev   = hasMulti ? `<td class="var-cell">${varPrevHTML}</td>` : '';
     const tdInicio = (hasMulti && curIdx > 0) ? `<td class="var-cell hide-xs">${varInicioHTML}</td>` : '';
 
-    return `<tr>
+    return `<tr class="${rowClass}">
       <td class="avatar-cell">${avatarHTML}</td>
       <td class="pos-cell ${posClass}">${displayPos}</td>
       <td>
@@ -689,7 +688,7 @@ function renderRanking() {
   container.innerHTML = `
     <table class="ranking-table">
       <thead><tr>
-        <th style="width:44px"></th>
+        <th style="width:64px"></th>
         <th style="text-align:right;padding-right:0.6rem">#</th>
         <th>Jugador</th>
         <th>Cat.</th>
@@ -716,8 +715,7 @@ function renderResultados() {
     const gd = m.games_d !== null ? parseInt(m.games_d) : null;
     const ga = m.games_a !== null ? parseInt(m.games_a) : null;
     const hasScore = gd !== null && ga !== null && (gd > 0 || ga > 0);
-    const dWins = hasScore && gd > ga;
-    const aWins = hasScore && ga > gd;
+    const dWins = hasScore && gd > ga, aWins = hasScore && ga > gd;
     const scoreHTML = hasScore
       ? `<div class="match-score">${gd}&ndash;${ga}</div>`
       : `<div class="match-score pending">Pendiente</div>`;
@@ -781,7 +779,8 @@ function updateNavBtns() {
 function showCat(cat, btn) {
   currentCat = cat;
   document.querySelectorAll('.sector-btn').forEach(b => b.className = 'sector-btn');
-  btn.className = cat === 'todos' ? 'sector-btn active-a' : `sector-btn active-${cat.toLowerCase()}`;
+  const cls = cat === 'todos' ? 'active-todos' : `active-${cat.toLowerCase()}`;
+  btn.className = `sector-btn ${cls}`;
   renderRanking();
 }
 
@@ -796,7 +795,6 @@ function setSyncError() {
   document.getElementById('sync-dot').classList.remove('live');
   document.getElementById('sync-text').textContent = 'Sin conexión';
 }
-
 function setSyncOk() {
   document.getElementById('sync-dot').classList.add('live');
   const now = new Date();
