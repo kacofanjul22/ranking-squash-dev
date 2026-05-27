@@ -3,7 +3,7 @@
 <head>
 <meta charset="UTF-8">
 <meta name="viewport" content="width=device-width, initial-scale=1.0">
-<title>Ranking ATS 2026 — DEV</title>
+<title>Ranking ATS 2026 — Asociación Tucumana de Squash</title>
 <link href="https://fonts.googleapis.com/css2?family=Inter:wght@400;500;600;700&family=Playfair+Display:wght@700;900&display=swap" rel="stylesheet">
 <style>
 :root{
@@ -19,7 +19,7 @@ body{background:var(--black);color:var(--white);font-family:'Inter',sans-serif;m
 
 .dev-banner{background:var(--orange);color:#fff;text-align:center;font-size:0.72rem;font-weight:700;letter-spacing:2px;text-transform:uppercase;padding:5px;}
 
-header{background:var(--gray);border-bottom:2px solid var(--orange);padding:0 2rem;display:flex;align-items:center;justify-content:space-between;gap:1rem;position:sticky;top:26px;z-index:100;box-shadow:0 4px 24px rgba(0,0,0,.6);}
+header{background:var(--gray);border-bottom:2px solid var(--orange);padding:0 2rem;display:flex;align-items:center;justify-content:space-between;gap:1rem;position:sticky;top:0;z-index:100;box-shadow:0 4px 24px rgba(0,0,0,.6);}
 .logo-area{display:flex;align-items:center;gap:12px;padding:10px 0;}
 .logo-svg{width:46px;height:54px;flex-shrink:0;}
 .logo-text{line-height:1.1;}
@@ -198,6 +198,44 @@ main{max-width:1000px;margin:0 auto;padding:2rem 1.5rem;}
 .rules-card li strong{color:var(--white);}
 
 .loading-msg,.error-msg{text-align:center;padding:3rem;color:var(--muted);font-size:0.9rem;letter-spacing:1px;}
+/* ── STATS ── */
+.stats-section-title{font-size:0.7rem;font-weight:700;letter-spacing:2px;text-transform:uppercase;color:var(--muted);margin:2rem 0 1rem;padding-bottom:0.5rem;border-bottom:1px solid #2a2a2a;display:flex;align-items:center;gap:8px;}
+.stats-section-title span{color:var(--orange);}
+.stats-cat-toggle{display:flex;gap:6px;margin-bottom:1.5rem;flex-wrap:wrap;}
+.stats-cat-btn{padding:4px 14px;border-radius:20px;font-size:0.72rem;font-weight:600;letter-spacing:1px;cursor:pointer;border:1.5px solid var(--gray3);background:var(--gray2);color:var(--muted);font-family:'Inter',sans-serif;transition:all 0.2s;}
+.stats-cat-btn:hover{color:var(--white);}
+.stats-cat-btn.active{background:var(--orange-soft);color:var(--orange);border-color:var(--orange);}
+.highlights-grid{display:grid;grid-template-columns:repeat(auto-fill,minmax(280px,1fr));gap:12px;margin-bottom:0.5rem;}
+.highlight-card{background:var(--gray);border-radius:14px;border:1px solid var(--gray3);padding:1.2rem 1.4rem;display:flex;align-items:center;gap:1rem;transition:border-color 0.2s;cursor:default;}
+.highlight-card:hover{border-color:var(--gray4);}
+.highlight-card.gold{border-color:rgba(255,193,7,0.4);background:rgba(255,193,7,0.05);}
+.highlight-card.silver{border-color:rgba(192,192,192,0.3);background:rgba(192,192,192,0.04);}
+.highlight-icon{font-size:1.8rem;flex-shrink:0;width:44px;text-align:center;line-height:1;}
+.highlight-body{flex:1;min-width:0;}
+.highlight-label{font-size:0.65rem;font-weight:700;letter-spacing:2px;text-transform:uppercase;color:var(--muted);margin-bottom:4px;}
+.highlight-names{font-size:0.92rem;font-weight:600;color:var(--white);white-space:nowrap;overflow:hidden;text-overflow:ellipsis;}
+.highlight-names.multi{font-size:0.82rem;white-space:normal;line-height:1.5;}
+.highlight-val{font-family:'Playfair Display',serif;font-size:1.5rem;font-weight:700;color:var(--orange);line-height:1;margin-top:2px;}
+.highlight-sub{font-size:0.7rem;color:var(--muted);margin-top:2px;}
+.highlight-avatar{width:44px;height:44px;border-radius:50%;background:var(--gray2);border:2px solid var(--gray3);overflow:hidden;display:flex;align-items:center;justify-content:center;font-size:0.85rem;font-weight:700;color:var(--muted);text-transform:uppercase;flex-shrink:0;}
+.highlight-avatar img{width:100%;height:100%;object-fit:cover;}
+/* full-width table */
+.stats-table-wrap{overflow-x:auto;margin-top:0.5rem;}
+.stats-table{width:100%;border-collapse:collapse;}
+.stats-table thead tr{border-bottom:1px solid #2e2e2e;}
+.stats-table th{font-size:0.65rem;font-weight:700;letter-spacing:2px;text-transform:uppercase;color:var(--muted);padding:0 0.7rem 0.85rem;text-align:left;cursor:pointer;white-space:nowrap;user-select:none;}
+.stats-table th:hover{color:var(--white);}
+.stats-table th.sort-asc::after{content:' ▲';color:var(--orange);}
+.stats-table th.sort-desc::after{content:' ▼';color:var(--orange);}
+.stats-table tbody tr{border-bottom:1px solid #1e1e1e;transition:background 0.15s;}
+.stats-table tbody tr:hover{background:var(--gray2);}
+.stats-table td{padding:0.65rem 0.7rem;font-size:0.88rem;vertical-align:middle;}
+.stats-table td:first-child{padding-left:0;}
+.st-name{font-weight:500;}
+.st-av{width:36px;height:36px;border-radius:50%;background:var(--gray2);border:1.5px solid var(--gray3);overflow:hidden;display:flex;align-items:center;justify-content:center;font-size:0.72rem;font-weight:700;color:var(--muted);text-transform:uppercase;}
+.st-av img{width:100%;height:100%;object-fit:cover;}
+.st-av.cat-a{border-color:var(--cat-a);}.st-av.cat-b{border-color:var(--cat-b);}.st-av.cat-c{border-color:var(--cat-c);}.st-av.cat-d{border-color:var(--cat-d);}
+
 .error-msg{color:#ff6b6b;}
 
 @media(max-width:640px){
@@ -210,7 +248,7 @@ main{max-width:1000px;margin:0 auto;padding:2rem 1.5rem;}
 </head>
 <body>
 
-<div class="dev-banner">⚡ Entorno DEV — no compartir como producción</div>
+
 
 <header>
   <div class="logo-area">
@@ -242,6 +280,7 @@ main{max-width:1000px;margin:0 auto;padding:2rem 1.5rem;}
   <button class="tab active" onclick="showTab('ranking',this)">Ranking</button>
   <button class="tab" onclick="showTab('desafios',this)">Desafíos <span class="badge" id="pendientes-badge">·</span></button>
   <button class="tab" onclick="showTab('resultados',this)">Resultados</button>
+  <button class="tab" onclick="showTab('stats',this)">Stats 🏆</button>
   <button class="tab" onclick="showTab('reglamento',this)">Reglamento</button>
 </nav>
 
@@ -315,6 +354,25 @@ main{max-width:1000px;margin:0 auto;padding:2rem 1.5rem;}
     <div class="match-grid" id="resultados-content"><div class="loading-msg">Cargando resultados…</div></div>
   </div>
 
+
+  <!-- ══ STATS ══ -->
+  <div class="panel" id="panel-stats">
+    <div class="stats-cat-toggle">
+      <button class="stats-cat-btn active" onclick="setStatsCat('todos',this)">General</button>
+      <button class="stats-cat-btn" onclick="setStatsCat('A',this)">Cat. A</button>
+      <button class="stats-cat-btn" onclick="setStatsCat('B',this)">Cat. B</button>
+      <button class="stats-cat-btn" onclick="setStatsCat('C',this)">Cat. C</button>
+      <button class="stats-cat-btn" onclick="setStatsCat('D',this)">Cat. D</button>
+    </div>
+    <div class="stats-section-title">🏆 <span>Highlights</span> — premios de la temporada</div>
+    <div class="highlights-grid" id="highlights-grid">
+      <div class="loading-msg">Calculando estadísticas…</div>
+    </div>
+    <div class="stats-section-title">📊 <span>Tabla completa</span> — ordenable por columna</div>
+    <div class="stats-table-wrap" id="stats-table-wrap">
+      <div class="loading-msg">Cargando…</div>
+    </div>
+  </div>
   <!-- ══ REGLAMENTO ══ -->
   <div class="panel" id="panel-reglamento">
     <div class="rules-card">
@@ -1034,10 +1092,264 @@ function showTab(name,btn){
   btn.classList.add('active');
   document.getElementById('panel-'+name).classList.add('active');
   if(name==='desafios') renderDesafios();
+  if(name==='stats') renderStats();
 }
 function setSyncError(){
   document.getElementById('sync-dot').classList.remove('live');
   document.getElementById('sync-text').textContent='Sin conexión';
+}
+
+// ═══════════════════════════════════
+//  STATS (pestaña)
+// ═══════════════════════════════════
+let currentStatsCat = 'todos';
+
+function setStatsCat(cat, btn) {
+  currentStatsCat = cat;
+  document.querySelectorAll('.stats-cat-btn').forEach(b => b.classList.remove('active'));
+  btn.classList.add('active');
+  renderStats();
+}
+
+function renderStats() {
+  const lastFecha = fechaKeys[fechaKeys.length - 1];
+  const firstFecha = fechaKeys[0];
+  const currentPlayers = rankingByFecha[lastFecha] || [];
+  const firstPlayers   = rankingByFecha[firstFecha] || [];
+
+  // Filtrar por categoría si corresponde
+  const filterCat = p => currentStatsCat === 'todos' || p.categoria === currentStatsCat;
+  const filteredCurrent = currentPlayers.filter(filterCat);
+  const filteredFirst   = firstPlayers.filter(filterCat);
+
+  // ── Rachas consecutivas ──────────────────────────────────────────────────
+  // Para cada jugador calcular racha actual (ordenar partidos por fecha)
+  const rachaData = {};
+  const matchesSorted = [...resultadosData].sort((a, b) => {
+    const na = parseFloat(a.fecha), nb = parseFloat(b.fecha);
+    return (!isNaN(na) && !isNaN(nb)) ? na - nb : a.fecha.localeCompare(b.fecha);
+  });
+  matchesSorted.forEach(m => {
+    const gdn = parseInt(m.games_d) || 0, gan = parseInt(m.games_a) || 0;
+    if (!m.desafiante && !m.aceptante) return;
+    if (gdn === 0 && gan === 0) return;
+    [m.desafiante, m.aceptante].forEach((p, i) => {
+      if (!p) return;
+      if (!rachaData[p]) rachaData[p] = { racha: 0, maxRacha: 0 };
+      const won = i === 0 ? gdn > gan : gan > gdn;
+      if (won) {
+        rachaData[p].racha = Math.max(0, rachaData[p].racha) + 1;
+        rachaData[p].maxRacha = Math.max(rachaData[p].maxRacha, rachaData[p].racha);
+      } else {
+        rachaData[p].racha = Math.min(0, rachaData[p].racha) - 1;
+      }
+    });
+  });
+
+  // ── Construir mapa de stats por jugador ──────────────────────────────────
+  const allNames = [...new Set([
+    ...filteredCurrent.map(p => p.nombre),
+    ...filteredFirst.map(p => p.nombre),
+  ])];
+
+  const statsMap = {};
+  allNames.forEach(nombre => {
+    const cur  = filteredCurrent.find(p => norm(p.nombre) === norm(nombre));
+    const ini  = filteredFirst.find(p => norm(p.nombre) === norm(nombre));
+    const st   = getStats(nombre) || { wins: 0, losses: 0, gf: 0, gc: 0 };
+    const rd   = rachaData[nombre] || { racha: 0, maxRacha: 0 };
+    const total = st.wins + st.losses;
+    const pct   = total > 0 ? Math.round((st.wins / total) * 100) : 0;
+    const dif   = st.gf - st.gc;
+    const difPP = total > 0 ? parseFloat((dif / total).toFixed(1)) : 0;
+    const subida = (ini && cur) ? (ini.posNum - cur.posNum) : null;
+    const cat = cur ? cur.categoria : (ini ? ini.categoria : '');
+
+    statsMap[nombre] = {
+      nombre, cat,
+      posActual: cur ? cur.posNum : null,
+      posInicio: ini ? ini.posNum : null,
+      subida,
+      wins: st.wins, losses: st.losses, total, pct,
+      gf: st.gf, gc: st.gc, dif, difPP,
+      rachaActual: rd.racha,
+      maxRacha: rd.maxRacha,
+    };
+  });
+
+  const all = Object.values(statsMap).filter(p => p.posActual !== null);
+
+  // ── 8 HIGHLIGHTS ─────────────────────────────────────────────────────────
+  function topN(arr, key, n = 1, desc = true) {
+    return [...arr]
+      .filter(p => p[key] !== null && p[key] !== undefined)
+      .sort((a, b) => desc ? b[key] - a[key] : a[key] - b[key])
+      .slice(0, n);
+  }
+
+  // 1. Mayor escalada
+  const escalada = topN(all.filter(p => p.subida !== null), 'subida', 3);
+  // 2. Mayor caída
+  const caida = topN(all.filter(p => p.subida !== null), 'subida', 3, false).filter(p => p.subida < 0);
+  // 3. Sin ceder un game (ganaron todos sus partidos al menos 3-0 → gf/wins >= 3 y gc === 0)
+  //    Simplificado: gc === 0 y wins > 0
+  const sinGame = all.filter(p => p.gc === 0 && p.wins > 0);
+  // 4. Invictos (0 derrotas, al menos 1 partido)
+  const invictos = all.filter(p => p.losses === 0 && p.wins > 0);
+  // 5. Mejor racha activa ganadora
+  const mejorRacha = topN(all.filter(p => p.rachaActual > 0), 'rachaActual', 3);
+  // 6. Más partidos jugados
+  const masPartidos = topN(all, 'total', 3);
+  // 7. Mejor % victorias (mín 2 partidos)
+  const mejorPct = topN(all.filter(p => p.total >= 2), 'pct', 3);
+  // 8. El matagigantes: quién le ganó al jugador de mayor posición
+  let matagigantes = null, victimaNombre = '', victimaPos = 999;
+  matchesSorted.forEach(m => {
+    const gdn = parseInt(m.games_d) || 0, gan = parseInt(m.games_a) || 0;
+    if (gdn === 0 && gan === 0) return;
+    [
+      { ganador: m.desafiante, perdedor: m.aceptante, gano: gdn > gan },
+      { ganador: m.aceptante, perdedor: m.desafiante, gano: gan > gdn },
+    ].forEach(({ ganador, perdedor, gano }) => {
+      if (!gano || !ganador || !perdedor) return;
+      const perdedorSt = statsMap[perdedor] || Object.values(statsMap).find(s => norm(s.nombre) === norm(perdedor));
+      const ganadorSt  = statsMap[ganador]  || Object.values(statsMap).find(s => norm(s.nombre) === norm(ganador));
+      if (!perdedorSt || !ganadorSt) return;
+      // Filtrar por categoría
+      if (currentStatsCat !== 'todos' && ganadorSt.cat !== currentStatsCat) return;
+      if (perdedorSt.posActual && perdedorSt.posActual < victimaPos) {
+        victimaPos = perdedorSt.posActual;
+        victimaNombre = perdedor;
+        matagigantes = ganadorSt.nombre;
+      }
+    });
+  });
+
+  function avatar(nombre, small = false) {
+    const url = playerPhotos[norm(nombre)];
+    const ini = nombre.trim().split(' ').map(w => w[0]).slice(0, 2).join('').toUpperCase();
+    const cat = (statsMap[nombre] || {}).cat || '';
+    const sz = small ? 'st-av' : 'highlight-avatar';
+    const cc = cat ? ` cat-${cat.toLowerCase()}` : '';
+    return `<div class="${sz}${cc}">${url ? `<img src="${url}" alt="${nombre}" onerror="this.style.display='none';this.parentElement.textContent='${ini}'">` : ini}</div>`;
+  }
+
+  function card(icon, label, players, valFn, subFn, gold = false) {
+    if (!players || players.length === 0) return '';
+    const cls = gold ? ' gold' : '';
+    const multi = players.length > 1;
+    const names = players.map(p => p.nombre).join(', ');
+    const val = valFn(players[0]);
+    const sub = subFn ? subFn(players[0]) : '';
+    const av = players.length === 1 ? avatar(players[0].nombre) : '';
+    return `<div class="highlight-card${cls}">
+      ${av || `<div class="highlight-icon">${icon}</div>`}
+      <div class="highlight-body">
+        <div class="highlight-label">${label}</div>
+        <div class="highlight-names${multi ? ' multi' : ''}">${names}</div>
+        <div class="highlight-val">${val}</div>
+        ${sub ? `<div class="highlight-sub">${sub}</div>` : ''}
+      </div>
+      ${av ? '' : ''}
+    </div>`;
+  }
+
+  const noData = '<div style="color:var(--muted);font-size:0.85rem;padding:0.3rem 0 0.5rem">—</div>';
+
+  const highlightsHTML = [
+    escalada.length ? card('🚀','Mayor escalada desde el inicio', escalada,
+      p => `+${p.subida} puestos`,
+      p => `Pos. inicial #${p.posInicio} → actual #${p.posActual}`, true) : noData,
+
+    caida.length ? card('📉','Mayor caída desde el inicio', caida,
+      p => `${p.subida} puestos`,
+      p => `Pos. inicial #${p.posInicio} → actual #${p.posActual}`) : noData,
+
+    invictos.length ? card('👑','Invictos', invictos,
+      p => `${p.wins}-${p.losses}`,
+      p => `${p.wins} ${p.wins === 1 ? 'victoria' : 'victorias'} sin derrotas`, true) : noData,
+
+    sinGame.length ? card('💪','Sin ceder un game', sinGame,
+      p => `${p.gf} games a favor`,
+      p => `${p.wins} ${p.wins === 1 ? 'partido' : 'partidos'} ganados · 0 games cedidos`) : noData,
+
+    mejorRacha.length ? card('🔥','Mejor racha activa', mejorRacha,
+      p => `${p.rachaActual} seguidas`,
+      p => `${p.wins}G / ${p.losses}P en total`, true) : noData,
+
+    masPartidos.length ? card('⚡','Más activo', masPartidos,
+      p => `${p.total} partidos`,
+      p => `${p.wins}G / ${p.losses}P`) : noData,
+
+    mejorPct.length ? card('📊','Mejor % de victorias', mejorPct,
+      p => `${p.pct}%`,
+      p => `${p.wins}G de ${p.total} jugados`, true) : noData,
+
+    matagigantes ? card('🎯','El matagigantes',
+      [statsMap[matagigantes] || { nombre: matagigantes }],
+      () => `venció al #${victimaPos}`,
+      () => `Derrotó a ${victimaNombre}`) : noData,
+  ].join('');
+
+  document.getElementById('highlights-grid').innerHTML = highlightsHTML;
+
+  // ── TABLA COMPLETA ───────────────────────────────────────────────────────
+  renderStatsTable(all);
+}
+
+let statsSort = { col: 'posActual', desc: false };
+
+function renderStatsTable(data) {
+  const cols = [
+    { key: 'posActual', label: '#',        fmt: v => v !== null ? `#${v}` : '—' },
+    { key: 'nombre',    label: 'Jugador',   fmt: (v, r) => `<div class="st-name">${v}</div>` },
+    { key: 'cat',       label: 'Cat.',      fmt: v => v ? `<span class="sector-badge badge-${v.toLowerCase()}">${v}</span>` : '—' },
+    { key: 'wins',      label: 'G',         fmt: v => `<span class="rec-w">${v}</span>` },
+    { key: 'losses',    label: 'P',         fmt: v => `<span class="rec-l">${v}</span>` },
+    { key: 'total',     label: 'Partidos',  fmt: v => v },
+    { key: 'pct',       label: '% Vic.',    fmt: v => `${v}%` },
+    { key: 'dif',       label: 'Dif.',      fmt: v => { const c = v > 0 ? 'rec-dif-pos' : v < 0 ? 'rec-dif-neg' : 'var-same'; return `<span class="${c}">${v > 0 ? '+' + v : v}</span>`; }},
+    { key: 'difPP',     label: 'Dif/P',     fmt: v => { const c = v > 0 ? 'rec-dif-pos' : v < 0 ? 'rec-dif-neg' : 'var-same'; return `<span class="${c}">${v > 0 ? '+' + v : v}</span>`; }},
+    { key: 'subida',    label: 'Var. ini.', fmt: v => v === null ? '—' : v > 0 ? `<span class="var-up">▲ ${v}</span>` : v < 0 ? `<span class="var-down">▼ ${Math.abs(v)}</span>` : '<span class="var-same">—</span>' },
+    { key: 'rachaActual', label: 'Racha',   fmt: v => v > 0 ? `<span class="var-up">🔥 ${v}</span>` : v < 0 ? `<span class="var-down">${v}</span>` : '<span class="var-same">—</span>' },
+  ];
+
+  const sorted = [...data].sort((a, b) => {
+    const va = a[statsSort.col], vb = b[statsSort.col];
+    if (va === null) return 1; if (vb === null) return -1;
+    if (typeof va === 'string') return statsSort.desc ? vb.localeCompare(va) : va.localeCompare(vb);
+    return statsSort.desc ? vb - va : va - vb;
+  });
+
+  const headers = cols.map(c => {
+    const isSorted = statsSort.col === c.key;
+    const cls = isSorted ? (statsSort.desc ? ' sort-desc' : ' sort-asc') : '';
+    return `<th class="${cls}" onclick="sortStats('${c.key}')">${c.label}</th>`;
+  }).join('');
+
+  const rows = sorted.map(r => {
+    const url = playerPhotos[norm(r.nombre)];
+    const ini = r.nombre.trim().split(' ').map(w => w[0]).slice(0, 2).join('').toUpperCase();
+    const cc = r.cat ? ` cat-${r.cat.toLowerCase()}` : '';
+    const av = `<div class="st-av${cc}">${url ? `<img src="${url}" alt="${r.nombre}" onerror="this.style.display='none';this.parentElement.textContent='${ini}'">` : ini}</div>`;
+    const tds = cols.map(c => {
+      if (c.key === 'nombre') return `<td style="display:flex;align-items:center;gap:8px;padding:0.65rem 0.7rem;">${av}${c.fmt(r[c.key], r)}</td>`;
+      return `<td>${c.fmt(r[c.key], r)}</td>`;
+    }).join('');
+    return `<tr>${tds}</tr>`;
+  }).join('');
+
+  document.getElementById('stats-table-wrap').innerHTML = `
+    <table class="stats-table">
+      <thead><tr>${headers}</tr></thead>
+      <tbody>${rows}</tbody>
+    </table>`;
+}
+
+function sortStats(col) {
+  if (statsSort.col === col) statsSort.desc = !statsSort.desc;
+  else { statsSort.col = col; statsSort.desc = true; }
+  renderStats();
 }
 function setSyncOk(){
   document.getElementById('sync-dot').classList.add('live');
@@ -1051,7 +1363,7 @@ function setSyncOk(){
 async function loadAll(){
   try{
     await Promise.all([loadRanking(),loadResultados(),loadFotos()]);
-    renderRanking();renderResultados();renderDesafios();
+    renderRanking();renderResultados();renderDesafios();renderStats();
     setSyncOk();
   }catch(e){
     console.error(e);
