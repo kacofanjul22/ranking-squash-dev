@@ -237,6 +237,34 @@ main{max-width:1000px;margin:0 auto;padding:2rem 1.5rem;}
 .st-av.cat-a{border-color:var(--cat-a);}.st-av.cat-b{border-color:var(--cat-b);}.st-av.cat-c{border-color:var(--cat-c);}.st-av.cat-d{border-color:var(--cat-d);}
 
 .error-msg{color:#ff6b6b;}
+/* ── AVISOS ── */
+.avisos-wrap{margin-bottom:1.5rem;}
+.aviso-card{background:linear-gradient(135deg,rgba(232,82,26,0.12),rgba(232,82,26,0.04));border:1px solid rgba(232,82,26,0.35);border-radius:12px;padding:1rem 1.4rem;margin-bottom:8px;display:flex;gap:1rem;align-items:flex-start;}
+.aviso-icon{font-size:1.4rem;flex-shrink:0;margin-top:1px;}
+.aviso-body{flex:1;}
+.aviso-titulo{font-weight:700;font-size:0.92rem;color:var(--white);margin-bottom:3px;}
+.aviso-texto{font-size:0.85rem;color:var(--white2);line-height:1.55;}
+.aviso-fecha{font-size:0.68rem;color:var(--muted);margin-top:4px;letter-spacing:1px;}
+
+/* ── JUGADORES ── */
+.jugadores-controls{display:flex;gap:8px;margin-bottom:1.4rem;flex-wrap:wrap;align-items:center;}
+.jugadores-grid{display:grid;grid-template-columns:repeat(auto-fill,minmax(270px,1fr));gap:12px;}
+.jugador-card{background:var(--gray);border-radius:14px;border:1px solid var(--gray3);padding:1.2rem;display:flex;gap:1rem;align-items:center;transition:border-color 0.2s;}
+.jugador-card:hover{border-color:var(--gray4);}
+.jugador-foto{width:62px;height:62px;border-radius:50%;background:var(--gray2);border:2px solid var(--gray3);overflow:hidden;display:flex;align-items:center;justify-content:center;font-size:1.1rem;font-weight:700;color:var(--muted);text-transform:uppercase;flex-shrink:0;}
+.jugador-foto img{width:100%;height:100%;object-fit:cover;}
+.jugador-foto.cat-a{border-color:var(--cat-a);}.jugador-foto.cat-b{border-color:var(--cat-b);}
+.jugador-foto.cat-c{border-color:var(--cat-c);}.jugador-foto.cat-d{border-color:var(--cat-d);}
+.jugador-info{flex:1;min-width:0;}
+.jugador-nombre{font-weight:600;font-size:0.92rem;color:var(--white);white-space:nowrap;overflow:hidden;text-overflow:ellipsis;}
+.jugador-meta{display:flex;align-items:center;gap:6px;margin-top:4px;flex-wrap:wrap;}
+.jugador-alta{font-size:0.68rem;color:var(--muted);margin-top:4px;}
+.jugador-baja{font-size:0.68rem;color:var(--red);margin-top:4px;}
+.jugador-pos{font-family:'Playfair Display',serif;font-size:1rem;font-weight:700;color:var(--orange);}
+.wa-btn{display:inline-flex;align-items:center;gap:5px;margin-top:6px;background:rgba(37,211,102,0.12);color:#25d366;border:1px solid rgba(37,211,102,0.3);border-radius:8px;padding:4px 10px;font-size:0.72rem;font-weight:600;text-decoration:none;transition:background 0.2s;}
+.wa-btn:hover{background:rgba(37,211,102,0.22);}
+.inactivo-tag{font-size:0.65rem;font-weight:700;letter-spacing:1px;padding:2px 8px;border-radius:8px;background:rgba(255,92,92,0.12);color:var(--red);}
+
 
 @media(max-width:640px){
   header{padding:0 1rem;}nav{padding:0 1rem;}main{padding:1.5rem 1rem;}
@@ -278,9 +306,11 @@ main{max-width:1000px;margin:0 auto;padding:2rem 1.5rem;}
 
 <nav>
   <button class="tab active" onclick="showTab('ranking',this)">Ranking</button>
+  <button class="tab" onclick="showTab('jugadores',this)">Jugadores</button>
   <button class="tab" onclick="showTab('desafios',this)">Desafíos <span class="badge" id="pendientes-badge">·</span></button>
   <button class="tab" onclick="showTab('resultados',this)">Resultados</button>
   <button class="tab" onclick="showTab('stats',this)">Stats 🏆</button>
+  <button class="tab" onclick="showTab('avisos',this)">Avisos <span class="badge" id="avisos-badge" style="display:none">!</span></button>
   <button class="tab" onclick="showTab('reglamento',this)">Reglamento</button>
 </nav>
 
@@ -288,6 +318,7 @@ main{max-width:1000px;margin:0 auto;padding:2rem 1.5rem;}
 
   <!-- ══ RANKING ══ -->
   <div class="panel active" id="panel-ranking">
+    <div id="avisos-inline-wrap" class="avisos-wrap" style="display:none"></div>
     <div class="sector-tabs">
       <button class="sector-btn active-todos" onclick="showCat('todos',this)">Todos</button>
       <button class="sector-btn" onclick="showCat('A',this)">Categoría A</button>
@@ -373,6 +404,26 @@ main{max-width:1000px;margin:0 auto;padding:2rem 1.5rem;}
       <div class="loading-msg">Cargando…</div>
     </div>
   </div>
+
+  <!-- ══ JUGADORES ══ -->
+  <div class="panel" id="panel-jugadores">
+    <div class="jugadores-controls">
+      <button class="stats-cat-btn active" onclick="setJugadoresCat('todos',this)">Todos</button>
+      <button class="stats-cat-btn" onclick="setJugadoresCat('A',this)">Cat. A</button>
+      <button class="stats-cat-btn" onclick="setJugadoresCat('B',this)">Cat. B</button>
+      <button class="stats-cat-btn" onclick="setJugadoresCat('C',this)">Cat. C</button>
+      <button class="stats-cat-btn" onclick="setJugadoresCat('D',this)">Cat. D</button>
+    </div>
+    <div class="jugadores-grid" id="jugadores-grid">
+      <div class="loading-msg">Cargando jugadores…</div>
+    </div>
+  </div>
+
+  <!-- ══ AVISOS ══ -->
+  <div class="panel" id="panel-avisos">
+    <div id="avisos-list" class="loading-msg">Cargando avisos…</div>
+  </div>
+
   <!-- ══ REGLAMENTO ══ -->
   <div class="panel" id="panel-reglamento">
     <div class="rules-card">
@@ -430,7 +481,8 @@ main{max-width:1000px;margin:0 auto;padding:2rem 1.5rem;}
 // ═══════════════════════════════════
 const CSV_RANKING    = 'https://docs.google.com/spreadsheets/d/e/2PACX-1vRgJZBlL0j97a5N6k-9QzHZoAexu61_Ti73MVgIHptaLHE4YgwXFT1iW5f01XAofbI9elMnCpAT3Slj/pub?gid=1935327508&single=true&output=csv';
 const CSV_RESULTADOS = 'https://docs.google.com/spreadsheets/d/e/2PACX-1vRgJZBlL0j97a5N6k-9QzHZoAexu61_Ti73MVgIHptaLHE4YgwXFT1iW5f01XAofbI9elMnCpAT3Slj/pub?gid=0&single=true&output=csv';
-const CSV_FOTOS      = 'https://docs.google.com/spreadsheets/d/e/2PACX-1vRgJZBlL0j97a5N6k-9QzHZoAexu61_Ti73MVgIHptaLHE4YgwXFT1iW5f01XAofbI9elMnCpAT3Slj/pub?gid=1137266713&single=true&output=csv';
+const CSV_JUGADORES  = 'https://docs.google.com/spreadsheets/d/e/2PACX-1vRgJZBlL0j97a5N6k-9QzHZoAexu61_Ti73MVgIHptaLHE4YgwXFT1iW5f01XAofbI9elMnCpAT3Slj/pub?gid=1109244112&single=true&output=csv';
+const CSV_AVISOS     = 'https://docs.google.com/spreadsheets/d/e/2PACX-1vRgJZBlL0j97a5N6k-9QzHZoAexu61_Ti73MVgIHptaLHE4YgwXFT1iW5f01XAofbI9elMnCpAT3Slj/pub?gid=1451806801&single=true&output=csv';
 const TOP8 = 8;
 
 // ═══════════════════════════════════
@@ -438,7 +490,8 @@ const TOP8 = 8;
 // ═══════════════════════════════════
 let rankingByFecha={}, fechaKeys=[], currentFecha=null;
 let resultadosData=[], playerStats={}, playerPhotos={};
-let currentCat='todos';
+let jugadoresData=[], avisosData=[];
+let currentCat='todos', currentJugadoresCat='todos';
 
 // ═══════════════════════════════════
 //  CSV
@@ -542,23 +595,184 @@ function toDriveImg(url){
   const m=url.match(/\/d\/([a-zA-Z0-9_-]{10,})/);
   return m?`https://drive.google.com/thumbnail?id=${m[1]}&sz=w150`:url;
 }
-async function loadFotos(){
+
+// JUGADORES: NOMBRE | CATEGORIA | FECHA_ALTA | FECHA_BAJA | CONTACTO | URL_FOTO
+async function loadJugadores(){
   try{
-    const rows=await fetchCSV(CSV_FOTOS);
+    const rows=await fetchCSV(CSV_JUGADORES);
+    jugadoresData=[];
     playerPhotos={};
-    let nc=0,uc=1;
-    if(rows.length>0) rows[0].forEach((h,i)=>{
-      const hu=(h||'').toString().toUpperCase().trim();
-      if(hu.includes('NOM')||hu.includes('JUGAD')) nc=i;
-      if(hu.includes('URL')||hu.includes('FOTO')||hu.includes('IMG')) uc=i;
-    });
+    if(rows.length<2) return;
+    const h=rows[0].map(x=>(x||'').toString().toUpperCase().trim());
+    const ci=(k)=>h.findIndex(x=>x.includes(k));
+    const iNom=ci('NOM')>=0?ci('NOM'):0;
+    const iCat=ci('CAT')>=0?ci('CAT'):1;
+    const iAlta=ci('ALTA')>=0?ci('ALTA'):2;
+    const iBaja=ci('BAJA')>=0?ci('BAJA'):3;
+    const iWA=ci('CONT')>=0?ci('CONT'):ci('WA')>=0?ci('WA'):4;
+    const iFoto=ci('FOTO')>=0?ci('FOTO'):ci('URL')>=0?ci('URL'):5;
     rows.forEach((row,i)=>{
       if(i===0) return;
-      const nombre=(row[nc]||'').toString().trim();
-      const url=(row[uc]||'').toString().trim();
-      if(nombre&&url&&url.startsWith('http')) playerPhotos[norm(nombre)]=toDriveImg(url);
+      const nombre=(row[iNom]||'').toString().trim();
+      if(!nombre) return;
+      const url=(row[iFoto]||'').toString().trim();
+      const fotoUrl=url.startsWith('http')?toDriveImg(url):'';
+      if(fotoUrl) playerPhotos[norm(nombre)]=fotoUrl;
+      jugadoresData.push({
+        nombre,
+        categoria:(row[iCat]||'').toString().trim().toUpperCase(),
+        fechaAlta:(row[iAlta]||'').toString().trim(),
+        fechaBaja:(row[iBaja]||'').toString().trim(),
+        contacto:(row[iWA]||'').toString().trim(),
+        foto:fotoUrl,
+      });
     });
-  }catch(e){console.warn('Fotos:',e.message);}
+  }catch(e){console.warn('Jugadores:',e.message);}
+}
+
+// AVISOS: FECHA | TITULO | TEXTO | ACTIVO
+async function loadAvisos(){
+  try{
+    const rows=await fetchCSV(CSV_AVISOS);
+    avisosData=[];
+    if(rows.length<2) return;
+    const h=rows[0].map(x=>(x||'').toString().toUpperCase().trim());
+    const ci=(k)=>h.findIndex(x=>x.includes(k));
+    const iFecha=ci('FECH')>=0?ci('FECH'):0;
+    const iTit=ci('TIT')>=0?ci('TIT'):1;
+    const iTxt=ci('TXT')>=0?ci('TXT'):ci('TEXT')>=0?ci('TEXT'):2;
+    const iAct=ci('ACT')>=0?ci('ACT'):3;
+    rows.forEach((row,i)=>{
+      if(i===0) return;
+      const titulo=(row[iTit]||'').toString().trim();
+      if(!titulo) return;
+      const activo=(row[iAct]||'').toString().trim().toUpperCase();
+      if(activo!=='SI'&&activo!=='SÍ'&&activo!=='S') return;
+      avisosData.push({
+        fecha:(row[iFecha]||'').toString().trim(),
+        titulo,
+        texto:(row[iTxt]||'').toString().trim(),
+      });
+    });
+    // Más reciente primero
+    avisosData.reverse();
+  }catch(e){console.warn('Avisos:',e.message);}
+}
+
+
+// ═══════════════════════════════════
+//  JUGADORES
+// ═══════════════════════════════════
+function setJugadoresCat(cat, btn){
+  currentJugadoresCat=cat;
+  document.querySelectorAll('.jugadores-controls .stats-cat-btn').forEach(b=>b.classList.remove('active'));
+  btn.classList.add('active');
+  renderJugadores();
+}
+
+function renderJugadores(){
+  const container=document.getElementById('jugadores-grid');
+  // Obtener posición actual de cada jugador desde el ranking
+  const lastPlayers=rankingByFecha[currentFecha]||[];
+  const posMap={};
+  lastPlayers.forEach(p=>{ posMap[norm(p.nombre)]=p.posNum; });
+
+  let lista=jugadoresData;
+  if(currentJugadoresCat!=='todos') lista=lista.filter(j=>j.categoria===currentJugadoresCat);
+  // Ordenar: activos primero (los que están en el ranking), luego por posición
+  lista=[...lista].sort((a,b)=>{
+    const pa=posMap[norm(a.nombre)]||999;
+    const pb=posMap[norm(b.nombre)]||999;
+    return pa-pb;
+  });
+
+  if(!lista.length){
+    container.innerHTML='<div class="loading-msg">Sin jugadores en esta categoría.</div>';
+    return;
+  }
+
+  container.innerHTML=lista.map(j=>{
+    const inRanking=posMap[norm(j.nombre)]!==undefined;
+    const pos=inRanking?posMap[norm(j.nombre)]:null;
+    const cat=j.categoria;
+    const catClass=cat?` cat-${cat.toLowerCase()}`:'';
+    const initials=j.nombre.trim().split(' ').map(w=>w[0]).slice(0,2).join('').toUpperCase();
+    const fotoHTML=j.foto
+      ?`<img src="${j.foto}" alt="${j.nombre}" onerror="this.style.display='none';this.parentElement.textContent='${initials}'">`
+      :initials;
+    const badgeHTML=cat?`<span class="sector-badge badge-${cat.toLowerCase()}">${cat}</span>`:'';
+    const posHTML=pos?`<span class="jugador-pos">#${pos}</span>`:'';
+    const waHTML=j.contacto
+      ?`<a class="wa-btn" href="https://wa.me/${j.contacto.replace(/\D/g,'')}" target="_blank">
+          <svg width="12" height="12" viewBox="0 0 24 24" fill="#25d366"><path d="M17.472 14.382c-.297-.149-1.758-.867-2.03-.967-.273-.099-.471-.148-.67.15-.197.297-.767.966-.94 1.164-.173.199-.347.223-.644.075-.297-.15-1.255-.463-2.39-1.475-.883-.788-1.48-1.761-1.653-2.059-.173-.297-.018-.458.13-.606.134-.133.298-.347.446-.52.149-.174.198-.298.298-.497.099-.198.05-.371-.025-.52-.075-.149-.669-1.612-.916-2.207-.242-.579-.487-.5-.669-.51-.173-.008-.371-.01-.57-.01-.198 0-.52.074-.792.372-.272.297-1.04 1.016-1.04 2.479 0 1.462 1.065 2.875 1.213 3.074.149.198 2.096 3.2 5.077 4.487.709.306 1.262.489 1.694.625.712.227 1.36.195 1.871.118.571-.085 1.758-.719 2.006-1.413.248-.694.248-1.289.173-1.413-.074-.124-.272-.198-.57-.347z"/><path d="M12 0C5.373 0 0 5.373 0 12c0 2.117.549 4.107 1.51 5.833L.057 23.854a.5.5 0 0 0 .609.609l6.02-1.453A11.945 11.945 0 0 0 12 24c6.627 0 12-5.373 12-12S18.627 0 12 0zm0 21.894a9.877 9.877 0 0 1-5.034-1.377l-.361-.214-3.732.9.916-3.632-.235-.373A9.877 9.877 0 0 1 2.106 12C2.106 6.53 6.53 2.106 12 2.106c5.471 0 9.894 4.424 9.894 9.894 0 5.471-4.423 9.894-9.894 9.894z"/></svg>
+          WhatsApp
+        </a>`
+      :'';
+    const inactivoHTML=!inRanking&&j.fechaBaja
+      ?`<div class="jugador-baja">Baja: ${j.fechaBaja}</div>`
+      :!inRanking?`<span class="inactivo-tag">INACTIVO</span>`:'';
+    const altaHTML=j.fechaAlta?`<div class="jugador-alta">Alta: ${j.fechaAlta}</div>`:'';
+
+    return `<div class="jugador-card">
+      <div class="jugador-foto${catClass}">${fotoHTML}</div>
+      <div class="jugador-info">
+        <div class="jugador-nombre">${j.nombre}</div>
+        <div class="jugador-meta">
+          ${badgeHTML}
+          ${posHTML}
+          ${inactivoHTML}
+        </div>
+        ${altaHTML}
+        ${j.fechaBaja&&!inRanking?`<div class="jugador-baja">Baja: ${j.fechaBaja}</div>`:''}
+        ${waHTML}
+      </div>
+    </div>`;
+  }).join('');
+}
+
+// ═══════════════════════════════════
+//  AVISOS
+// ═══════════════════════════════════
+function renderAvisos(){
+  // Panel dedicado
+  const container=document.getElementById('avisos-list');
+  if(container){
+    if(!avisosData.length){
+      container.innerHTML='<div class="loading-msg">Sin avisos activos.</div>';
+    } else {
+      container.innerHTML=avisosData.map(a=>`
+        <div class="aviso-card">
+          <div class="aviso-icon">📢</div>
+          <div class="aviso-body">
+            <div class="aviso-titulo">${a.titulo}</div>
+            <div class="aviso-texto">${a.texto}</div>
+            ${a.fecha?`<div class="aviso-fecha">${a.fecha}</div>`:''}
+          </div>
+        </div>`).join('');
+    }
+  }
+  // Banner inline en el ranking (solo si hay avisos)
+  const inlineWrap=document.getElementById('avisos-inline-wrap');
+  const badge=document.getElementById('avisos-badge');
+  if(!avisosData.length){
+    if(inlineWrap) inlineWrap.style.display='none';
+    if(badge) badge.style.display='none';
+    return;
+  }
+  if(badge){ badge.style.display='inline'; badge.textContent=avisosData.length; }
+  if(inlineWrap){
+    inlineWrap.style.display='block';
+    // Mostrar solo el más reciente en el banner del ranking
+    const a=avisosData[0];
+    inlineWrap.innerHTML=`<div class="aviso-card">
+      <div class="aviso-icon">📢</div>
+      <div class="aviso-body">
+        <div class="aviso-titulo">${a.titulo}</div>
+        <div class="aviso-texto">${a.texto}</div>
+        ${a.fecha?`<div class="aviso-fecha">${a.fecha}</div>`:''}
+      </div>
+    </div>`;
+  }
 }
 
 // ═══════════════════════════════════
@@ -1025,6 +1239,8 @@ function showTab(name,btn){
   document.getElementById('panel-'+name).classList.add('active');
   if(name==='desafios') renderDesafios();
   if(name==='stats') renderStats();
+  if(name==='jugadores') renderJugadores();
+  if(name==='avisos') renderAvisos();
 }
 function setSyncError(){
   document.getElementById('sync-dot').classList.remove('live');
@@ -1294,8 +1510,8 @@ function setSyncOk(){
 // ═══════════════════════════════════
 async function loadAll(){
   try{
-    await Promise.all([loadRanking(),loadResultados(),loadFotos()]);
-    renderRanking();renderResultados();renderDesafios();renderStats();
+    await Promise.all([loadRanking(),loadResultados(),loadJugadores(),loadAvisos()]);
+    renderRanking();renderResultados();renderDesafios();renderStats();renderAvisos();renderJugadores();
     setSyncOk();
   }catch(e){
     console.error(e);
