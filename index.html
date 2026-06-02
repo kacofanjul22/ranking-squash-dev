@@ -858,98 +858,35 @@ function closeModal(e){if(e.target===document.getElementById('modal-overlay')) c
 function closeModalDirect(){document.getElementById('modal-overlay').classList.remove('open');}
 
 // ═══════════════════════════════════
-//  DESAFÍOS
-//  FIX 3: sin separación por categoría, lista única ordenada por posición
+//  DESAFÍOS — muestra los partidos de la última fecha de RESULTADOS
 // ═══════════════════════════════════
-function calcularDesafios(){
-  const players=rankingByFecha[currentFecha];
-  if(!players||!players.length) return [];
-  const sorted=[...players].sort((a,b)=>(a.posNum||99)-(b.posNum||99));
-  const desafios=[], processed=new Set(), n=sorted.length;
-
-  // Excepción: #4 desafía al #2
-  const p4=sorted.find(p=>p.posNum===4);
-  const p2=sorted.find(p=>p.posNum===2);
-  if(p4&&p2){
-    desafios.push({par:p4,impar:p2,especial:'#4 desafía al #2'});
-    processed.add(4); processed.add(2);
-  }
-
-  // Excepción: último jugador
-  if(n>0){
-    const ult=sorted[n-1];
-    if(!processed.has(ult.posNum)){
-      if(ult.posNum%2!==0){
-        const rival=sorted.find(p=>p.posNum===ult.posNum-2);
-        if(rival){
-          desafios.push({par:ult,impar:rival,especial:'Último impar, desafía 2 arriba'});
-          processed.add(ult.posNum); processed.add(rival.posNum);
-        }
-      } else if(n>=2){
-        const pen=sorted[n-2];
-        desafios.push({par:null,impar:pen,especial:`Último par: ${pen.nombre} gana sin jugar`,woWin:true});
-        processed.add(ult.posNum); processed.add(pen.posNum);
-      }
-    }
-  }
-
-  // Regla general: par desafía al impar 3 puestos arriba
-  for(const p of sorted){
-    if(processed.has(p.posNum)) continue;
-    if(p.posNum%2===0){
-      const rival=sorted.find(x=>x.posNum===p.posNum-3);
-      if(rival&&!processed.has(rival.posNum)){
-        desafios.push({par:p,impar:rival});
-        processed.add(p.posNum); processed.add(rival.posNum);
-      }
-    }
-  }
-
-  // Verificar resultados
-  const ultimaFR=resultadosData.length
-    ?[...new Set(resultadosData.map(r=>r.fecha))].sort((a,b)=>{
-        const na=parseFloat(a),nb=parseFloat(b);
-        return(!isNaN(na)&&!isNaN(nb))?na-nb:a.localeCompare(b);
-      }).pop()
-    :null;
-
-  desafios.forEach(d=>{
-    if(d.woWin||!d.par) return;
-    const pn=norm(d.par.nombre), in2=norm(d.impar.nombre);
-    const match=resultadosData.find(m=>
-      m.fecha===ultimaFR&&(
-        (norm(m.desafiante)===pn&&norm(m.aceptante)===in2)||
-        (norm(m.desafiante)===in2&&norm(m.aceptante)===pn)
-      )
-    );
-    if(match){
-      d.resultado=match;
-      d.jugado=(parseInt(match.games_d)||0)>0||(parseInt(match.games_a)||0)>0;
-    }
-  });
-
-  // Ordenar por posición del par (o impar si woWin)
-  desafios.sort((a,b)=>{
-    const pa=a.par?a.par.posNum:a.impar?a.impar.posNum:99;
-    const pb=b.par?b.par.posNum:b.impar?b.impar.posNum:99;
-    return pa-pb;
-  });
-
-  return desafios;
-}
-
 function renderDesafios(){
-  const desafios=calcularDesafios();
   const container=document.getElementById('desafios-content');
 
-  const total=desafios.filter(d=>!d.woWin).length;
-  const jugados=desafios.filter(d=>d.jugado).length;
+  // Obtener la última fecha de resultados
+  const fechas=[...new Set(resultadosData.map(r=>r.fecha))].sort((a,b)=>{
+    const na=parseFloat(a),nb=parseFloat(b);
+    return(!isNaN(na)&&!isNaN(nb))?na-nb:a.localeCompare(b);
+  });
+  if(!fechas.length){
+    container.innerHTML='<div class="loading-msg">Sin resultados cargados.</div>';
+    ['ps-total','ps-jugados','ps-pendientes'].forEach(id=>document.getElementById(id).textContent='—');
+    document.getElementById('pendientes-badge').textContent='·';
+    return;
+  }
+  const ultimaFecha=fechas[fechas.length-1];
+  const partidos=resultadosData.filter(r=>r.fecha===ultimaFecha);
+
+  // Contadores desde la planilla
+  const total=partidos.length;
+  const jugados=partidos.filter(m=>(parseInt(m.games_d)||0)>0||(parseInt(m.games_a)||0)>0).length;
   const pendientes=total-jugados;
   document.getElementById('ps-total').textContent=total;
   document.getElementById('ps-jugados').textContent=jugados;
   document.getElementById('ps-pendientes').textContent=pendientes;
   document.getElementById('pendientes-badge').textContent=pendientes>0?pendientes:'✓';
 
+  // Período activo (calendario)
   const hoy=new Date();
   const dia=hoy.getDate();
   const mes=hoy.toLocaleString('es-AR',{month:'long'});
@@ -964,58 +901,53 @@ function renderDesafios(){
     pEnd=new Date(hoy.getFullYear(),hoy.getMonth()+1,0);
   }
   document.getElementById('periodo-actual-txt').textContent=label;
-  document.getElementById('periodo-badge').textContent=label;
+  document.getElementById('periodo-badge').textContent=`Fecha ${ultimaFecha}`;
   const totalD=Math.max(1,(pEnd-pStart)/864e5);
   const pasados=Math.max(0,Math.min(totalD,(hoy-pStart)/864e5));
   document.getElementById('periodo-progress').style.width=Math.round(pasados/totalD*100)+'%';
   const restantes=Math.max(0,Math.ceil((pEnd-hoy)/864e5));
   document.getElementById('periodo-dias').textContent=restantes>0?`${restantes} días restantes`:'Período finalizado';
 
-  if(!desafios.length){
-    container.innerHTML='<div class="loading-msg">No se pudieron calcular los desafíos.</div>';
+  if(!partidos.length){
+    container.innerHTML='<div class="loading-msg">Sin partidos en esta fecha.</div>';
     return;
   }
 
-  // FIX 3: lista única, sin separación por categoría. Badge de cat en cada card.
-  const catColors={A:'var(--cat-a)',B:'var(--cat-b)',C:'var(--cat-c)',D:'var(--cat-d)'};
+  // Buscar posición actual de cada jugador en el ranking
+  const lastRanking=rankingByFecha[currentFecha]||[];
+  function posOf(nombre){
+    const p=lastRanking.find(x=>norm(x.nombre)===norm(nombre));
+    return p?p.posNum:null;
+  }
 
-  const html=`<div class="desafio-grid">${desafios.map(d=>{
-    if(d.woWin){
-      return `<div class="desafio-card" style="opacity:0.7">
-        <div style="flex:1;font-size:0.88rem;color:var(--muted)">🏅 <b style="color:var(--white)">${d.impar.nombre}</b> gana sin jugar <span style="color:var(--muted);font-size:0.75rem">(último par)</span></div>
-      </div>`;
-    }
-    const cat=d.par.categoria||d.impar.categoria||'';
-    const catColor=catColors[cat]||'var(--muted)';
-    const catBadge=cat?`<span class="sector-badge badge-${cat.toLowerCase()}" style="margin-bottom:4px">${cat}</span>`:'';
+  const html=`<div class="desafio-grid">${partidos.map(m=>{
+    const gd=parseInt(m.games_d)||0, ga=parseInt(m.games_a)||0;
+    const jugado=gd>0||ga>0;
+    const posD=posOf(m.desafiante), posA=posOf(m.aceptante);
+    const posDesHTML=posD?`<span style="font-family:'Playfair Display',serif;font-size:1.1rem;font-weight:700;color:var(--orange)">#${posD}</span> `:'';
+    const posAceHTML=posA?`<span style="font-family:'Playfair Display',serif;font-size:1.1rem;font-weight:700;color:var(--white2)">#${posA}</span> `:'';
 
-    let estadoHTML='';
-    if(d.jugado){
-      const gd=parseInt(d.resultado.games_d)||0,ga=parseInt(d.resultado.games_a)||0;
-      const isParDes=norm(d.resultado.desafiante)===norm(d.par.nombre);
-      const parG=isParDes?gd:ga, imparG=isParDes?ga:gd;
-      const parGano=parG>imparG;
-      estadoHTML=`<span class="resultado-tag ${parGano?'jugado-d':'jugado-a'}">${parGano?d.par.nombre+' ganó':d.impar.nombre+' ganó'} ${parG}–${imparG}</span>`;
+    let scoreHTML='';
+    if(jugado){
+      const dWins=gd>ga;
+      scoreHTML=`<div style="font-family:'Playfair Display',serif;font-size:1.4rem;font-weight:700;color:var(--orange);letter-spacing:2px;white-space:nowrap;min-width:52px;text-align:right">${gd}&ndash;${ga}</div>`;
     } else {
-      estadoHTML=`<span class="resultado-tag pendiente">Pendiente</span>`;
+      scoreHTML=`<div style="font-size:0.72rem;color:var(--muted);font-weight:500;letter-spacing:1px;text-transform:uppercase;white-space:nowrap">Pendiente</div>`;
     }
 
     return `<div class="desafio-card">
-      <div class="desafio-nums">
-        <div class="desafio-num par">#${d.par.posNum}</div>
-        <div class="desafio-arrow">↑</div>
-        <div class="desafio-num impar">#${d.impar.posNum}</div>
-      </div>
-      <div class="desafio-players">
-        <div class="desafio-player par-p">${d.par.nombre} <span class="dp-pos">desafía</span></div>
+      <div class="desafio-players" style="flex:1">
+        <div class="desafio-player" style="margin-bottom:4px">
+          ${posDesHTML}<span style="font-weight:${jugado&&gd>ga?700:400};color:${jugado&&gd>ga?'var(--white)':'var(--white2)'}">${m.desafiante||'—'}</span>
+          ${jugado&&gd>ga?'<span style="color:var(--orange);font-size:0.75rem;margin-left:4px">✓</span>':''}
+        </div>
         <div class="desafio-vs">VS</div>
-        <div class="desafio-player">${d.impar.nombre}</div>
-        ${d.especial?`<div style="font-size:0.68rem;color:var(--muted);margin-top:3px">⚠ ${d.especial}</div>`:''}
+        <div class="desafio-player" style="margin-top:4px">
+          ${posAceHTML}<span style="font-weight:${jugado&&ga>gd?700:400};color:${jugado&&ga>gd?'var(--white)':'var(--white2)'}">${m.aceptante||'—'}</span>
+          ${jugado&&ga>gd?'<span style="color:var(--orange);font-size:0.75rem;margin-left:4px">✓</span>':''}
+        </div>
       </div>
-      <div class="desafio-cat">
-        ${catBadge}
-        ${estadoHTML}
-      </div>
+      ${scoreHTML}
     </div>`;
   }).join('')}</div>`;
 
