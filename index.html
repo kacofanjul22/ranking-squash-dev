@@ -20,6 +20,9 @@ body{background:var(--black);color:var(--white);font-family:'Inter',sans-serif;m
 .dev-banner{background:var(--orange);color:#fff;text-align:center;font-size:0.72rem;font-weight:700;letter-spacing:2px;text-transform:uppercase;padding:5px;}
 
 header{background:var(--gray);border-bottom:2px solid var(--orange);padding:0 2rem;display:flex;align-items:center;justify-content:space-between;gap:1rem;position:sticky;top:0;z-index:100;box-shadow:0 4px 24px rgba(0,0,0,.6);}
+.scroll-top{position:fixed;bottom:1.5rem;right:1.5rem;width:44px;height:44px;border-radius:50%;background:var(--orange);color:#fff;border:none;font-size:1.2rem;cursor:pointer;z-index:200;display:none;align-items:center;justify-content:center;box-shadow:0 4px 16px rgba(232,82,26,0.4);transition:all 0.2s;}
+.scroll-top.visible{display:flex;}
+.scroll-top:hover{background:var(--orange2);transform:translateY(-2px);}
 .logo-area{display:flex;align-items:center;gap:12px;padding:10px 0;}
 .logo-svg{width:46px;height:54px;flex-shrink:0;}
 .logo-text{line-height:1.1;}
@@ -31,7 +34,7 @@ header{background:var(--gray);border-bottom:2px solid var(--orange);padding:0 2r
 .dot.live{background:var(--orange);animation:pulse 2s infinite;}
 @keyframes pulse{0%,100%{opacity:1}50%{opacity:0.35}}
 
-nav{background:var(--gray);border-bottom:1px solid #2a2a2a;display:flex;padding:0 2rem;overflow-x:auto;scrollbar-width:none;}
+nav{background:var(--gray);border-bottom:1px solid #2a2a2a;display:flex;padding:0 2rem;overflow-x:auto;scrollbar-width:none;position:sticky;top:0;z-index:99;}
 nav::-webkit-scrollbar{display:none;}
 .tab{padding:0.9rem 1.4rem;font-size:0.78rem;font-weight:600;letter-spacing:1.5px;text-transform:uppercase;cursor:pointer;color:var(--muted);border-bottom:2px solid transparent;transition:all 0.2s;white-space:nowrap;background:none;border-top:none;border-left:none;border-right:none;font-family:'Inter',sans-serif;}
 .tab:hover{color:var(--white);}
@@ -308,7 +311,6 @@ main{max-width:1000px;margin:0 auto;padding:2rem 1.5rem;}
   <button class="tab active" onclick="showTab('ranking',this)">Ranking</button>
   <button class="tab" onclick="showTab('jugadores',this)">Jugadores</button>
   <button class="tab" onclick="showTab('desafios',this)">Desafíos <span class="badge" id="pendientes-badge">·</span></button>
-  <button class="tab" onclick="showTab('resultados',this)">Resultados</button>
   <button class="tab" onclick="showTab('stats',this)">Stats 🏆</button>
   <button class="tab" onclick="showTab('avisos',this)">Avisos <span class="badge" id="avisos-badge" style="display:none">!</span></button>
   <button class="tab" onclick="showTab('reglamento',this)">Reglamento</button>
@@ -318,7 +320,6 @@ main{max-width:1000px;margin:0 auto;padding:2rem 1.5rem;}
 
   <!-- ══ RANKING ══ -->
   <div class="panel active" id="panel-ranking">
-    <div id="avisos-inline-wrap" class="avisos-wrap" style="display:none"></div>
     <div class="sector-tabs">
       <button class="sector-btn active-todos" onclick="showCat('todos',this)">Todos</button>
       <button class="sector-btn" onclick="showCat('A',this)">Categoría A</button>
@@ -354,8 +355,12 @@ main{max-width:1000px;margin:0 auto;padding:2rem 1.5rem;}
   <!-- ══ DESAFÍOS ══ -->
   <div class="panel" id="panel-desafios">
     <div class="desafios-header">
-      <h2>Próximos <span>Desafíos</span></h2>
-      <span class="periodo-badge" id="periodo-badge">Período actual</span>
+      <h2>Partidos <span>& Desafíos</span></h2>
+      <div style="display:flex;align-items:center;gap:10px;flex-wrap:wrap;">
+        <span class="date-label">Fecha</span>
+        <select class="fecha-select" id="fecha-res-sel" onchange="renderDesafios()"><option>Cargando…</option></select>
+        <span class="periodo-badge" id="periodo-badge">Período actual</span>
+      </div>
     </div>
     <div class="period-stats">
       <div class="pstat"><div class="pval orange" id="ps-total">—</div><div class="plbl">Desafíos totales</div></div>
@@ -376,14 +381,7 @@ main{max-width:1000px;margin:0 auto;padding:2rem 1.5rem;}
     <div id="desafios-content" class="loading-msg">Calculando desafíos…</div>
   </div>
 
-  <!-- ══ RESULTADOS ══ -->
-  <div class="panel" id="panel-resultados">
-    <div class="res-controls">
-      <label>Fecha</label>
-      <select class="fecha-select" id="fecha-res-sel" onchange="renderResultados()"><option>Cargando…</option></select>
-    </div>
-    <div class="match-grid" id="resultados-content"><div class="loading-msg">Cargando resultados…</div></div>
-  </div>
+
 
 
   <!-- ══ STATS ══ -->
@@ -448,6 +446,8 @@ main{max-width:1000px;margin:0 auto;padding:2rem 1.5rem;}
   </div>
 </main>
 
+<button class="scroll-top" id="scroll-top" onclick="window.scrollTo({top:0,behavior:'smooth'})" title="Volver arriba">↑</button>
+
 <!-- ══ MODAL HISTORIAL ══ -->
 <div class="modal-overlay" id="modal-overlay" onclick="closeModal(event)">
   <div class="modal" id="modal-box">
@@ -456,6 +456,7 @@ main{max-width:1000px;margin:0 auto;padding:2rem 1.5rem;}
       <div class="modal-title">
         <h2 id="modal-nombre">—</h2>
         <p id="modal-sub">—</p>
+        <div id="modal-wa" style="margin-top:6px"></div>
       </div>
       <button class="modal-close" onclick="closeModalDirect()">✕</button>
     </div>
@@ -497,15 +498,24 @@ let currentCat='todos', currentJugadoresCat='todos';
 //  CSV
 // ═══════════════════════════════════
 function parseCSV(text){
-  return text.trim().split('\n').map(line=>{
-    const cols=[]; let cur='',inQ=false;
-    for(const c of line){
-      if(c==='"'){inQ=!inQ;}
-      else if(c===','&&!inQ){cols.push(cur.trim());cur='';}
-      else cur+=c;
+  // Parser robusto: maneja campos con saltos de línea y comas dentro de comillas
+  const rows=[];
+  let col='', row=[], inQ=false, i=0;
+  // Normalizar saltos de línea
+  text=text.replace(/\r\n/g,'\n').replace(/\r/g,'\n');
+  while(i<text.length){
+    const c=text[i];
+    if(c==='"'){
+      if(inQ&&text[i+1]==='"'){col+='"';i+=2;continue;} // comilla escapada ""
+      inQ=!inQ;i++;continue;
     }
-    cols.push(cur.trim()); return cols;
-  });
+    if(c===','&&!inQ){row.push(col.trim());col='';i++;continue;}
+    if(c==='\n'&&!inQ){row.push(col.trim());rows.push(row);row=[];col='';i++;continue;}
+    col+=c;i++;
+  }
+  row.push(col.trim());
+  if(row.some(x=>x!=='')) rows.push(row);
+  return rows;
 }
 async function fetchCSV(url){
   const r=await fetch(url);
@@ -646,8 +656,10 @@ async function loadAvisos(){
       if(i===0) return;
       const titulo=(row[iTit]||'').toString().trim();
       if(!titulo) return;
-      const activo=(row[iAct]||'').toString().trim().toUpperCase();
-      if(activo!=='SI'&&activo!=='SÍ'&&activo!=='S') return;
+      const activo=(row[iAct]||'').toString().trim().toUpperCase().normalize('NFD').replace(/[\u0300-\u036f]/g,'');
+      // Aceptar: SI, SÍ, S, YES, Y, 1, TRUE, VERDADERO
+      const esActivo=['SI','S','YES','Y','1','TRUE','VERDADERO'].includes(activo);
+      if(!esActivo) return;
       avisosData.push({
         fecha:(row[iFecha]||'').toString().trim(),
         titulo,
@@ -656,7 +668,8 @@ async function loadAvisos(){
     });
     // Más reciente primero
     avisosData.reverse();
-  }catch(e){console.warn('Avisos:',e.message);}
+    console.log('Avisos cargados:',avisosData.length, avisosData);
+  }catch(e){console.warn('Avisos error:',e.message);}
 }
 
 
@@ -746,7 +759,7 @@ function renderAvisos(){
           <div class="aviso-body">
             <div class="aviso-titulo">${a.titulo}</div>
             <div class="aviso-texto">${a.texto}</div>
-            ${a.fecha?`<div class="aviso-fecha">${a.fecha}</div>`:''}
+
           </div>
         </div>`).join('');
     }
@@ -769,7 +782,7 @@ function renderAvisos(){
       <div class="aviso-body">
         <div class="aviso-titulo">${a.titulo}</div>
         <div class="aviso-texto">${a.texto}</div>
-        ${a.fecha?`<div class="aviso-fecha">${a.fecha}</div>`:''}
+
       </div>
     </div>`;
   }
@@ -916,6 +929,17 @@ function openModal(nombre){
 
   document.getElementById('modal-nombre').textContent=nombre;
   document.getElementById('modal-sub').textContent=cat?`Categoría ${cat} · Pos. #${posActual}`:`Pos. #${posActual}`;
+  // WA button desde jugadoresData
+  const jData=jugadoresData.find(j=>norm(j.nombre)===norm(nombre));
+  const waEl=document.getElementById('modal-wa');
+  if(waEl){
+    if(jData&&jData.contacto){
+      const num=jData.contacto.replace(/\D/g,'');
+      waEl.innerHTML=`<a class="wa-btn" href="https://wa.me/${num}" target="_blank"><svg width="12" height="12" viewBox="0 0 24 24" fill="#25d366"><path d="M17.472 14.382c-.297-.149-1.758-.867-2.03-.967-.273-.099-.471-.148-.67.15-.197.297-.767.966-.94 1.164-.173.199-.347.223-.644.075-.297-.15-1.255-.463-2.39-1.475-.883-.788-1.48-1.761-1.653-2.059-.173-.297-.018-.458.13-.606.134-.133.298-.347.446-.52.149-.174.198-.298.298-.497.099-.198.05-.371-.025-.52-.075-.149-.669-1.612-.916-2.207-.242-.579-.487-.5-.669-.51-.173-.008-.371-.01-.57-.01-.198 0-.52.074-.792.372-.272.297-1.04 1.016-1.04 2.479 0 1.462 1.065 2.875 1.213 3.074.149.198 2.096 3.2 5.077 4.487.709.306 1.262.489 1.694.625.712.227 1.36.195 1.871.118.571-.085 1.758-.719 2.006-1.413.248-.694.248-1.289.173-1.413-.074-.124-.272-.198-.57-.347z"/><path d="M12 0C5.373 0 0 5.373 0 12c0 2.117.549 4.107 1.51 5.833L.057 23.854a.5.5 0 0 0 .609.609l6.02-1.453A11.945 11.945 0 0 0 12 24c6.627 0 12-5.373 12-12S18.627 0 12 0zm0 21.894a9.877 9.877 0 0 1-5.034-1.377l-.361-.214-3.732.9.916-3.632-.235-.373A9.877 9.877 0 0 1 2.106 12C2.106 6.53 6.53 2.106 12 2.106c5.471 0 9.894 4.424 9.894 9.894 0 5.471-4.423 9.894-9.894 9.894z"/></svg> WhatsApp</a>`;
+    } else {
+      waEl.innerHTML='';
+    }
+  }
   document.getElementById('ms-pos').textContent=`#${posActual}`;
 
   const stats=getStats(nombre);
@@ -1088,7 +1112,13 @@ function renderDesafios(){
     document.getElementById('pendientes-badge').textContent='·';
     return;
   }
-  const ultimaFecha=fechas[fechas.length-1];
+  // Poblar selector de fecha si está vacío
+  const sel=document.getElementById('fecha-res-sel');
+  if(sel&&(sel.options.length===0||sel.options[0].text==='Cargando…')){
+    sel.innerHTML=fechas.map(f=>`<option value="${f}">Fecha ${f}</option>`).join('');
+    sel.value=fechas[fechas.length-1];
+  }
+  const ultimaFecha=sel?sel.value:fechas[fechas.length-1];
   const partidos=resultadosData.filter(r=>r.fecha===ultimaFecha);
 
   // Contadores desde la planilla
@@ -1168,28 +1198,6 @@ function renderDesafios(){
   container.innerHTML=html;
 }
 
-// ═══════════════════════════════════
-//  RENDER RESULTADOS
-// ═══════════════════════════════════
-function renderResultados(){
-  const fecha=document.getElementById('fecha-res-sel').value;
-  const matches=resultadosData.filter(r=>r.fecha===fecha);
-  const container=document.getElementById('resultados-content');
-  if(!matches.length){container.innerHTML='<div class="loading-msg">Sin resultados para esta fecha.</div>';return;}
-  container.innerHTML=matches.map(m=>{
-    const gd=m.games_d!==null?parseInt(m.games_d):null;
-    const ga=m.games_a!==null?parseInt(m.games_a):null;
-    const hasScore=gd!==null&&ga!==null&&(gd>0||ga>0);
-    const dWins=hasScore&&gd>ga,aWins=hasScore&&ga>gd;
-    const scoreHTML=hasScore?`<div class="match-score">${gd}&ndash;${ga}</div>`:`<div class="match-score pending">Pendiente</div>`;
-    return `<div class="match-card">
-      <div class="match-players">
-        <span class="player-pill ${aWins?'loser':''}">${m.desafiante||'—'}${dWins?'<span class="winner-mark">✓</span>':''}</span>
-        <span class="vs-sep">VS</span>
-        <span class="player-pill ${dWins?'loser':''}">${m.aceptante||'—'}${aWins?'<span class="winner-mark">✓</span>':''}</span>
-      </div>${scoreHTML}</div>`;
-  }).join('');
-}
 
 // ═══════════════════════════════════
 //  HELPERS
@@ -1242,6 +1250,7 @@ function showTab(name,btn){
   if(name==='jugadores') renderJugadores();
   if(name==='avisos') renderAvisos();
 }
+
 function setSyncError(){
   document.getElementById('sync-dot').classList.remove('live');
   document.getElementById('sync-text').textContent='Sin conexión';
@@ -1511,7 +1520,7 @@ function setSyncOk(){
 async function loadAll(){
   try{
     await Promise.all([loadRanking(),loadResultados(),loadJugadores(),loadAvisos()]);
-    renderRanking();renderResultados();renderDesafios();renderStats();renderAvisos();renderJugadores();
+    renderRanking();renderDesafios();renderStats();renderAvisos();renderJugadores();
     setSyncOk();
   }catch(e){
     console.error(e);
@@ -1521,6 +1530,11 @@ async function loadAll(){
 }
 loadAll();
 setInterval(loadAll,60000);
+// Scroll-to-top button
+window.addEventListener('scroll',()=>{
+  const btn=document.getElementById('scroll-top');
+  if(btn) btn.classList.toggle('visible',window.scrollY>300);
+},{ passive:true });
 </script>
 </body>
 </html>
